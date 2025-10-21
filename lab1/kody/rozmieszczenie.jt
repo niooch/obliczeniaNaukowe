@@ -1,0 +1,34 @@
+#Jakub Kogut
+using Printf
+#funkcja szukajaca kroku w przedziale od a do b
+function findStep(a::Float64, b::Float64)
+    step::Float64 = 0.0
+    temp::Float64 = a
+    while temp<=b
+        temp = nextfloat(a)
+        stepNew::Float64 = temp - a
+        if stepNew != step
+            @printf("Znaleziono krok: %.20e\n", stepNew)
+            step = stepNew
+        end
+        a = temp
+    end
+end
+
+function printBits(start::Float64, step::Float64, count::Int)
+    value::Float64 = start
+    for i in 1:count
+        @printf("Wartosc: %.20e, Bity: %s\n", value, bitstring(value))
+        value += step
+    end
+end
+
+#wywolanie
+#printSteps = findStep(1.0, 2.0)
+#printBits(1.0, eps(Float64), 10)
+
+printSteps = findStep(0.5, 1.0)
+#printBits(0.5, eps(Float64)/2, 10)
+
+#printSteps = findStep(2.0, 4.0)
+#printBits(2.0, eps(Float64)*2, 10)

@@ -1,0 +1,23 @@
+#Jakub Kogut
+using Printf
+
+function f(x::Float64)::Float64
+    return sin(x) + cos(3*x)
+end
+
+function fPrim(x::Float64)::Float64
+    return cos(x) - 3*sin(3*x)
+end
+
+function defFPrim(x::Float64, h::Float64)::Float64
+    return (f(x + h) - f(x - h)) / h
+end
+
+for i in 0:54
+    x::Float64 = 1.0
+    h::Float64 = 2.0^(-i)
+    approx::Float64 = defFPrim(x, h)
+    exact::Float64 = fPrim(x)
+    error::Float64 = abs(approx - exact)
+    @printf("%2d %e %e %e\n", i, h, approx, error)
+end

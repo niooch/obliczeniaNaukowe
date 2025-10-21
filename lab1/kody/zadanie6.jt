@@ -1,0 +1,15 @@
+#Jakub Kogut
+using Printf
+
+function f(x::Float64)::Float64
+    return sqrt(x^2 + 1) - 1
+end
+
+function g(x::Float64)::Float64
+    return x^2 / (sqrt(x^2 + 1) + 1)
+end
+
+for i in 1:200
+    x::Float64 = 8.0^-i
+    @printf("i = %d, f(x) = %.16e, g(x) = %.16e\n", i, f(x), g(x))
+end

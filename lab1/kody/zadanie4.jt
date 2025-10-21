@@ -1,0 +1,16 @@
+#Jakub Kogut
+using Printf
+
+#artytmetyka float64
+function findX()::Float64
+    x::Float64 = Float64(1.0)
+    xNext::Float64 = nextfloat(x)
+    while (xNext * Float64(1.0) / xNext) == Float64(1.0)
+        x = xNext
+        xNext = nextfloat(x)
+    end
+    return xNext
+end
+
+x::Float64 = findX()
+@println("Najmniejsza liczba x typu Float64, dla której (x * 1.0) / x != 1.0 to: ", @sprintf("%.20e", x))

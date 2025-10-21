@@ -1,0 +1,437 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage[final]{microtype}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % czyść wszystko
+\lhead{Notatki z matematyki}
+\rhead{\leftmark}
+\cfoot{\thepage}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{siunitx} % jeżeli potrzebne jednostki
+\sisetup{locale = DE} % separator 1,23 (polski), można zmienić na locale=PL gdy dostępne
+\usepackage{bm}       % pogrubione symbole
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{csquotes}
+
+\usepackage{enumitem}
+\setlist{noitemsep,topsep=3pt}
+\usepackage{xcolor}
+\setlength{\headheight}{14pt}
+
+\title{Obliczenia Naukowe -- Sprawozdanie Laboratoria 1.}
+\author{Jakub Kogut}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Zadanie 1 -- Rozpoznanie arytmetyki}
+\subsection{Mashine epsilon}
+W pierwszej części zadania należało wyznaczyć najmniejszą liczbę $macheps>0$ taką, że 
+\[
+    fl(macheps + 1) > 1.
+\]
+Aby znaleść daną liczbe iteracyjne można dodwać do $1$ coraz mniejsze potęgi $2$, to znaczy iterować do momentu, aż $fl(1 + 2^{-k})$ przestanie być większe od $1$. W ten sposób otrzymujemy:
+%tabelka z wynikami
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Typ zmiennej & Wartość $macheps$ eksperymentalna & $eps(T)$ & float.h \\
+        \hline
+        Float16 & $9.76 \cdot 10^{-4}$ & $9.76 \cdot 10^{-4}$ & --\\
+        \hline
+        Float32 & $1.19 \cdot 10^{-7}$ & $1.19 \cdot 10^{-7}$ & $1.19 \cdot 10^{-7}$\\
+        \hline
+        Float64 & $2.22 \cdot 10^{-16}$ & $2.22 \cdot 10^{-16}$ & $2.22 \cdot 10^{-16}$\\
+        \hline
+    \end{tabular}
+    \label{tab:macheps}
+\end{table}\\
+Z wyników można wnioskować, że eksperymentalnie wyznaczone wartości $macheps$ zgadzają się z teoretycznymi wartościami $eps(T)$ dla poszczególnych typów zmiennoprzecinkowych, jak i również z wartościami podanymi w pliku float.h.\\
+Z eksperymentu wynika, że zwiększając precyzję reprezentacji liczby zmiennoprzecinkowej, zmniejsza się wartość $macheps$. Oznacza to, że liczby reprezentowane z większą precyzją mogą być bliżej siebie, co pozwala na dokładniejsze obliczenia.\\
+\textbf{Związek $macheps$ z precyzją arytmetyki}\\
+Jest to ta sama liczba, na wykładzie oznaczaliśmy przez $\epsilon$ najmniejszą możliwą liczbę w danej arytmetyce, taką że $fl(1 + \epsilon) > 1$. W związku z tym $macheps$ jest miarą precyzji danej arytmetyki zmiennoprzecinkowej.
+
+\subsection{Najmniejsza Dodatnia Liczba Maszynowa}
+W kolejnej części zadania należało wyznaczyć kolejną liczbę identyfikującą arytmetykę -- $\eta$ taką, że
+\[
+    \eta > 0 
+\]
+Podobnie jak w poprzedniej części zadania możemy iteracyjnie dzielić $1$ przez $2$ aż do momentu, gdy $fl(2^{-k})$ przestanie być większe od $0$. W ten sposób otrzymujemy:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Typ zmiennej & Wartość $\eta$ eksperymentalna & $nextfloat(FloatT(0.0))$ \\
+        \hline
+        Float16 & $6.10 \cdot 10^{-5}$ & $6.10 \cdot 10^{-5}$ \\
+        \hline
+        Float32 & $1.18 \cdot 10^{-38}$ & $1.18 \cdot 10^{-38}$ \\
+        \hline
+        Float64 & $2.22 \cdot 10^{-308}$ & $2.22 \cdot 10^{-308}$ \\
+        \hline
+    \end{tabular}
+    \label{tab:eta}
+\end{table}\\
+Tak samo jak wcześniej, eksperymentalnie wyznaczone wartości $\eta$ zgadzają się z wartościami zwracanymi przez funkcję $nextfloat(FloatT(0.0))$ dla poszczególnych typów zmiennoprzecinkowych.\\
+Analogicznie, zwiększając precyzję reprezentacji liczby zmiennoprzecinkowej, zmniejsza się wartość $\eta$. Oznacza to, że liczby reprezentowane z większą precyzją mogą być bliżej zera, co pozwala na dokładniejsze obliczenia w pobliżu zera.\\
+\textbf{Związek $\eta$ z $MIN_{SUB}$}\\
+Tak samo, w tym przypadku $\eta$ jest równe $MIN_{SUB}$, czyli najmniejszej dodatniej liczbie nieznormalizeowenej w danej arytmetyce zmiennoprzecinkowej.\\
+\textbf{Co zwraca funkcja $floatmin(T)$?}\\
+Funkcja $floatmin(T)$ zwraca najmniejszą dodatnią liczbę znormalizowaną w danej arytmetyce zmiennoprzecinkowej, to jest $MIN_{nor}$. Dla odpowienio typów $Float32$ i $Float64$ wartości te wynoszą odpowiednio $1.18 \cdot 10^{-38}$ oraz $2.22 \cdot 10^{-308}$, co zgadza się z wynikami podanymi na wykładzie.
+\subsection{Największa Dodatnia Liczba Maszynowa}
+W ostatniej części zadania należy wyznaczyć górną granicę reprezentowalnych liczb w danej arytmetyce zmiennoprzecinkowej, czyli $MAX$.\\
+Aby wyznaczyć tę liczbę skorzystamy z wzoru:
+\[
+    MAX = (2 - 2^{-p}) \cdot 2^{emax}
+\]
+gdzie $p$ to precyzja arytmetyki, a $emax$ to maksymalna wartość wykładnika (w arytmetyce z której korzystamy -- spełniającą standard IEEE 754 -- największa możliwa mantysa to właśnie $2 - 2^{-p}$). Do wyznaczenia wartości $emax$ skorzystamy właśnie z wskazanej funkcji $isinf$ mnożąc kolejne potęgi $2$ aż do momentu, gdy $fl(2^{k})$ zwróci nam wartość nieskończoności, natomiast aby obliczyć $p$ postępujemy analogicznie jak w pierwszej części zadania, przy wyzanaczniu $macheps$ i licząc ilość iteracji potrzebnych do uzyskania tej wartości. W ten sposób otrzymujemy:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Typ zmiennej & Wartość $MAX$ eksperymentalna & $floatmax(FloatT))$ & float.h\\
+        \hline
+        Float16 & $6.55 \cdot 10^{4}$ & $6.55 \cdot 10^{4}$ & -- \\
+        \hline
+        Float32 & $3.40 \cdot 10^{38}$ & $3.40 \cdot 10^{38}$ & $3.40 \cdot 10^{38}$\\
+        \hline
+        Float64 & $1.79 \cdot 10^{308}$ & $1.79 \cdot 10^{308}$ & $1.79 \cdot 10^{308}$\\
+        \hline
+    \end{tabular}
+    \label{tab:max}
+\end{table}\\
+Podobnie jak w poprzednich częściach zadania, eksperymentalnie wyznaczone wartości $MAX$ zgadzają się z wartościami zwracanymi przez funkcję $floatmax(FloatT)$ dla poszczególnych typów zmiennoprzecinkowych, jak i również z wartościami podanymi w pliku float.h.\\
+
+\section{Zadanie 2}
+W zadaniu należy sprawdzić, czy możliwe jest wyznaczenie $macheps$ za obliczenia 
+\[
+    3 \cdot (4/3 - 1) - 1
+\]
+w arytmetyce zmiennoprzecinkowej $Float64$.\\
+Wynik obliczeń to:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Typ zmiennej & Wartość eksperymentalna & $macheps$ \\
+        \hline
+        Float16 & $-9.76 \cdot 10^{-4}$ & $9.76 \cdot 10^{-4}$ \\
+        \hline
+        Float32 & $1.19 \cdot 10^{-7}$ & $1.19 \cdot 10^{-7}$\\
+        \hline
+        Float64 & $-2.22 \cdot 10^{-16}$ & $2.22 \cdot 10^{-16}$\\
+        \hline
+    \end{tabular}
+    \label{tab:kahan}
+\end{table}\\
+Faktycznie, możliwe jest wyznaczenie $macheps$ za pomocą podanego wyrażenia.
+\section{Zadanie 3}
+W zadaniu należy pokazać, że w arytmetyce $Float64$ liczby z przedziału $[1,2]$ są rozmieszczone równomiernie z krokiem $2^{-52}$ i następnie sprawdzić z jakimi krokami są rozmieszczone liczby z przedziałów $[1/2,1]$ oraz $[2,4]$.\\
+Aby znaleść krok rozmieszczenia liczb w danym przedziale, możemy skorzystać z funkcji $nextfloat$, która zwraca następną reprezentowalną liczbę zmiennoprzecinkową. W ten sposób możemy obliczyć różnicę między kolejnymi liczbami w danym przedziale i w ten sposób wyznaczyć wartość $\delta$. Otrzymujemy:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Przedział & Krok rozmieszczenia liczb ($\delta$) \\
+        \hline
+        $[1,2]$ & $2.22\cdot 10^{-16} \approx 2^{-52}$ \\
+        \hline
+        $[1/2,1]$ & $1.11\cdot 10^{-16} \approx 2^{-53}$ \\
+        \hline
+        $[2,4]$ & $ 4.44\cdot 10^{-16} \approx 2^{-51}$ \\
+        \hline
+    \end{tabular}
+    \label{tab:kroki}
+\end{table}\\
+Po znaleznieniu kroku możemy zapisać reprezentację liczby z danego przedziału $[2^e,2^{e+1}]$ jako:
+\[
+x = 2^e + k \delta, \quad k \in \{0,1,2,\ldots,2^{52}-1\}
+\]
+Możemy potwierdzić nasze wyniki przy użyciu funkcji $bitstring$, która zwraca reprezentację binarną liczby zmiennoprzecinkowej. Dla liczb z przedziału $[1,2]$ wygląda to następująco:
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Liczba & Bity cechy & Bity mantysy \\
+        \hline
+        1.00000000000000000000 & 01111111111 & 0000000000000000000000000000000000000000000000000000 \\
+        \hline
+        1.00000000000000022204 & 01111111111 & 0000000000000000000000000000000000000000000000000001 \\
+        \hline
+        1.00000000000000044409 & 01111111111 & 0000000000000000000000000000000000000000000000000010 \\
+        \hline
+        1.00000000000000066613 & 01111111111 & 0000000000000000000000000000000000000000000000000011 \\
+        \hline
+        ... & ... & ... \\
+        \hline
+    \end{tabular}
+    \label{tab:bitstring}
+\end{table}\\
+Zwiększając liczbę o krok $\delta$ zmieniamy ostatni bit mantysy, co potwierdza nasze wyniki (pomiędzy liczbami różniącymy się o krok nie ma już innej reprezentacji). Analogicznie można to zrobić dla pozostałych przedziałów.
+\section{Zadanie 4}
+Należy znaleść eksperymentalnie najmniejszą liczbę x w arytmetyce $Float64$, $1<x<2$, taką że:
+\[
+    x \otimes (1/x)) \neq 1
+\]
+Aby ją wyznaczyć, możemy zacząć od liczby $1$ i zwiększać ja przy użyciu funkcji $nextfloat$ aż do momentu, gdy warunek przestanie być spełniony. W ten sposób otrzymujemy:
+\[
+    x = 1.000000057228997
+\]
+Jest to najmniejsza liczba w arytmetyce $Float64$, spełniająca podany warunek.
+
+\section{Zadanie 5}
+W tym zadaniu należy zaimplementować 4 różne algorytmy obliczania iloczynu skalarnego dwóch wektorów w arytmetyce $Float32$ oraz $Float64$ i porównać ich wyniki między sobą oraz z wynikiem dokładnym.\\
+Badany jest tutaj wpływ kolejności wykonywanych działań na błąd wyniku. \\
+Zostały zaimplementowane następujące algorytmy:
+\begin{enumerate}
+    \item \textbf{w przód} -- $\sum_{i=1}^{n} x_i y_i$
+    \item \textbf{w tył} -- $\sum_{i=n}^{1} x_i y_i$
+    \item \textbf{sortowanie rosnąco} -- sortujemy iloczyny $x_i y_i$ rosnąco (w zależności od wartości bezwzględnej, osobno dodajemy ujemne i dodatnie)
+    \item \textbf{sortowanie malejąco} -- analogicznie jak wyżej, ale sortujemy malejąco
+\end{enumerate}
+Po przeprowadzeniu eksperymentów na wektorach:
+\[
+    x = [2.718281828, -3.141592654, 1.414213562, 0.5772156649, 0.3010299957]
+\]
+\[
+    y = [1486.2497, 878366.9879, -22.37492, 4773714.647, 0.000185049]
+\]
+oraz obliczeniu dokładnego wyniku iloczynu skalarnego (wynoszącego $-1.00657107000000 \cdot 10^{-11}$) otrzymujemy następujące wyniki:
+%Float32:
+%Wynik wPrzod: -4.9994430e-01
+%Wynik wTyl: -4.5434570e-01
+%Wynik ascSort: -5.0000000e-01
+%Wynik descSort: -5.0000000e-01
+
+%Float64:
+%Wynik wPrzod: 1.025188136829667e-10
+%Wynik wTyl: -1.564330887049437e-10
+%Wynik ascSort: 0.000000000000000e+00
+%Wynik descSort: 0.000000000000000e+00
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Algorytm & Wynik Float32 & Wynik Float64 \\
+        \hline
+        1. & $-4.9994430 \cdot 10^{-1}$ & $1.025188136829667 \cdot 10^{-10}$ \\
+        \hline
+        2. & $-4.5434570 \cdot 10^{-1}$ & $-1.564330887049437 \cdot 10^{-10}$ \\
+        \hline
+        3. & $-5.0000000 \cdot 10^{-1}$ & $0.000000000000000 \cdot 10^{0}$ \\
+        \hline
+        4. & $-5.0000000 \cdot 10^{-1}$ & $0.000000000000000 \cdot 10^{0}$ \\
+        \hline
+    \end{tabular}
+    \label{tab:iloczyn}
+\end{table}\\
+Jak widać, wyniki są obarczone dużym błędem, a różne algorytmy dają różne wyniki, co potwierdza, że kolejność wykonywania działań ma znaczenie.
+
+\section{Zadanie 6}
+W tym zadaniu należało obliczyć wartości funkcji: $f(x) = \sqrt{x^2 + 1} - 1 \text{ oraz } g(x) = \frac{x^2}{\sqrt{x^2 + 1} + 1}$
+Iterując po wartościach $x = 8^{-1}, 8^{-2}, 8^{-3}, \ldots$ aż do momentu, gdy wynik obliczeń przestanie się zmieniać (w arytmetyce $Float64$) otrzymujemy następujące wyniki:
+%i = 1, f(x) = 7.7822185373186414e-03, g(x) = 7.7822185373187065e-03
+%i = 2, f(x) = 1.2206286282867573e-04, g(x) = 1.2206286282875901e-04
+%i = 3, f(x) = 1.9073468138230965e-06, g(x) = 1.9073468138265659e-06
+%i = 4, f(x) = 2.9802321943606103e-08, g(x) = 2.9802321943606116e-08
+%i = 5, f(x) = 4.6566128730773926e-10, g(x) = 4.6566128719931904e-10
+%i = 6, f(x) = 7.2759576141834259e-12, g(x) = 7.2759576141569561e-12
+%i = 7, f(x) = 1.1368683772161603e-13, g(x) = 1.1368683772160957e-13
+%i = 8, f(x) = 1.7763568394002505e-15, g(x) = 1.7763568394002489e-15
+%i = 9, f(x) = 0.0000000000000000e+00, g(x) = 2.7755575615628914e-17
+%i = 10, f(x) = 0.0000000000000000e+00, g(x) = 4.3368086899420177e-19
+%i = 170, f(x) = 0.0000000000000000e+00, g(x) = 4.4501477170144028e-308
+%i = 171, f(x) = 0.0000000000000000e+00, g(x) = 6.9533558078350043e-310
+%i = 172, f(x) = 0.0000000000000000e+00, g(x) = 1.0864618449742194e-311
+%i = 173, f(x) = 0.0000000000000000e+00, g(x) = 1.6975966327722179e-313
+%i = 174, f(x) = 0.0000000000000000e+00, g(x) = 2.6524947387065904e-315
+%i = 175, f(x) = 0.0000000000000000e+00, g(x) = 4.1445230292290475e-317
+%i = 176, f(x) = 0.0000000000000000e+00, g(x) = 6.4758172331703867e-319
+%i = 177, f(x) = 0.0000000000000000e+00, g(x) = 1.0118464426828729e-320
+%i = 178, f(x) = 0.0000000000000000e+00, g(x) = 1.5810100666919889e-322
+%i = 179, f(x) = 0.0000000000000000e+00, g(x) = 0.0000000000000000e+00
+%i = 180, f(x) = 0.0000000000000000e+00, g(x) = 0.0000000000000000e+00
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        x & f(x) & g(x) \\
+        \hline
+        $8^{-1}$ & $7.7822185373186414 \cdot 10^{-3}$ & $7.7822185373187065 \cdot 10^{-3}$ \\
+        \hline
+        $8^{-2}$ & $1.2206286282867573 \cdot 10^{-4}$ & $1.2206286282875901 \cdot 10^{-4}$ \\
+        \hline
+        $8^{-3}$ & $1.9073468138230965 \cdot 10^{-6}$ & $1.9073468138265659 \cdot 10^{-6}$ \\
+        \hline
+        $8^{-4}$ & $2.9802321943606103 \cdot 10^{-8}$ & $2.9802321943606116 \cdot 10^{-8}$ \\
+        \hline
+        $8^{-5}$ & $4.6566128730773926 \cdot 10^{-10}$ & $4.6566128719931904 \cdot 10^{-10}$ \\
+        \hline
+        $8^{-6}$ & $7.2759576141834259 \cdot 10^{-12}$ & $7.2759576141569561 \cdot 10^{-12}$ \\
+        \hline
+        $8^{-7}$ & $1.1368683772161603 \cdot 10^{-13}$ & $1.1368683772160957 \cdot 10^{-13}$ \\
+        \hline
+        $8^{-8}$ & $1.7763568394002505 \cdot 10^{-15}$ & $1.7763568394002489 \cdot 10^{-15}$ \\
+        \hline
+        $8^{-9}$ & $0.0000000000000000 \cdot 10^{0}$ & $2.7755575615628914 \cdot 10^{-17}$ \\
+        \hline
+        \dots & \dots & \dots \\
+        \hline
+        $8^{-170}$ & $0.0000000000000000 \cdot 10^{0}$ & $4.4501477170144028 \cdot 10^{-308}$ \\
+        \hline
+        $8^{-171}$ & $0.0000000000000000 \cdot 10^{0}$ & $6.9533558078350043 \cdot 10^{-310}$ \\
+        \hline
+        $8^{-172}$ & $0.0000000000000000 \cdot 10^{0}$ & $1.0864618449742194 \cdot 10^{-311}$ \\
+        \hline
+        $8^{-173}$ & $0.0000000000000000 \cdot 10^{0}$ & $1.6975966327722179 \cdot 10^{-313}$ \\
+        \hline
+        $8^{-174}$ & $0.0000000000000000 \cdot 10^{0}$ & $2.6524947387065904 \cdot 10^{-315}$ \\
+        \hline
+        $8^{-175}$ & $0.0000000000000000 \cdot 10^{0}$ & $4.1445230292290475 \cdot 10^{-317}$ \\
+        \hline
+        $8^{-176}$ & $0.0000000000000000 \cdot 10^{0}$ & $6.4758172331703867 \cdot 10^{-319}$ \\
+        \hline
+        $8^{-177}$ & $0.0000000000000000 \cdot 10^{0}$ & $1.0118464426828729 \cdot 10^{-320}$ \\
+        \hline
+        $8^{-178}$ & $0.0000000000000000 \cdot 10^{0}$ & $1.5810100666919889 \cdot 10^{-322}$ \\
+        \hline
+        $8^{-179}$ & $0.0000000000000000 \cdot 10^{0}$ & $0.0000000000000000 \cdot 10^{0}$ \\
+        \hline
+    \end{tabular}
+    \label{tab:f_g}
+\end{table}\\
+\pagebreak
+
+Chodziaż funkcje $f$ oraz $g$ są algebraicznie tożsame, to jednak ich wyniki różnią się znacznie. Funkcja $f$ znacznie szybciej odchyla się od rzeczywistej wartość, dzieje się tak ze względu na duży błąd powstały przy odejmowaniu dwóch bliskich sobie liczb:
+\[
+    lim_{x \to 0} \sqrt{x^2 + 1} = 1
+\]
+zatem przy małych wartościach $x$ obie liczby w wyrażeniu $\sqrt{x^2 + 1} - 1$ są bardzo bliskie $1$, co powoduje powstanie dużego błędu numerycznego. W przypadku funkcji $g$ nie występuje odejmowanie bliskich sobie liczb, przez co błąd numeryczny jest znacznie mniejszy.
+
+\subsection{Zadanie 7}
+W zadaniu należało obliczyć przybliżoną wartość pochodnej funkcji $f(x) = \sin x + \cos 3x$ w punkcie $x_0 = 1$ za pomocą wzoru:
+\[
+    f'(x_0) \approx \tilde f'(x_0) = \frac{f(x_0 + h) - f(x_0)}{h}
+\]
+Obliczając wartości funkcji dla kolejnych wartości $h = 2^{-n}, n \in \{0,1,2,\ldots,54\}$ otrzymujemy następujące wyniki:
+%i h aprox_f' error
+%0 1.000000e+00 8.694677e-01 7.525254e-01
+%1 1.500000e+00 4.730729e-01 3.561306e-01
+% 2 1.250000e+00 2.998405e-01 1.828982e-01
+% 3 1.125000e+00 2.507786e-01 1.338363e-01
+% 4 1.062500e+00 2.381337e-01 1.211914e-01
+% 5 1.031250e+00 2.349485e-01 1.180062e-01
+% 6 1.015625e+00 2.341506e-01 1.172084e-01
+% 7 1.007812e+00 2.339511e-01 1.170088e-01
+% 8 1.003906e+00 2.339012e-01 1.169589e-01
+% 9 1.001953e+00 2.338887e-01 1.169464e-01
+%10 1.000977e+00 2.338856e-01 1.169433e-01
+%11 1.000488e+00 2.338848e-01 1.169425e-01
+%12 1.000244e+00 2.338846e-01 1.169423e-01
+%13 1.000122e+00 2.338846e-01 1.169423e-01
+%14 1.000061e+00 2.338846e-01 1.169423e-01
+%15 1.000031e+00 2.338846e-01 1.169423e-01
+%16 1.000015e+00 2.338846e-01 1.169423e-01
+%17 1.000008e+00 2.338846e-01 1.169423e-01
+%18 1.000004e+00 2.338846e-01 1.169423e-01
+%19 1.000002e+00 2.338846e-01 1.169423e-01
+%20 1.000001e+00 2.338846e-01 1.169423e-01
+%21 1.000000e+00 2.338846e-01 1.169423e-01
+%22 1.000000e+00 2.338846e-01 1.169423e-01
+%23 1.000000e+00 2.338846e-01 1.169423e-01
+%24 1.000000e+00 2.338846e-01 1.169423e-01
+%25 1.000000e+00 2.338846e-01 1.169423e-01
+%26 1.000000e+00 2.338846e-01 1.169423e-01
+%27 1.000000e+00 2.338846e-01 1.169423e-01
+%28 1.000000e+00 2.338846e-01 1.169423e-01
+%29 1.000000e+00 2.338846e-01 1.169423e-01
+%30 1.000000e+00 2.338845e-01 1.169422e-01
+%31 1.000000e+00 2.338846e-01 1.169423e-01
+%32 1.000000e+00 2.338843e-01 1.169421e-01
+%33 1.000000e+00 2.338839e-01 1.169416e-01
+%34 1.000000e+00 2.338848e-01 1.169425e-01
+%35 1.000000e+00 2.338829e-01 1.169406e-01
+%36 1.000000e+00 2.338867e-01 1.169444e-01
+%37 1.000000e+00 2.338715e-01 1.169292e-01
+%38 1.000000e+00 2.339172e-01 1.169750e-01
+%39 1.000000e+00 2.338257e-01 1.168834e-01
+%40 1.000000e+00 2.337646e-01 1.168224e-01
+%41 1.000000e+00 2.338867e-01 1.169444e-01
+%42 1.000000e+00 2.338867e-01 1.169444e-01
+%43 1.000000e+00 2.333984e-01 1.164562e-01
+%44 1.000000e+00 2.363281e-01 1.193858e-01
+%45 1.000000e+00 2.304688e-01 1.135265e-01
+%46 1.000000e+00 2.265625e-01 1.096202e-01
+%47 1.000000e+00 2.343750e-01 1.174327e-01
+%48 1.000000e+00 2.187500e-01 1.018077e-01
+%49 1.000000e+00 3.125000e-01 1.955577e-01
+%50 1.000000e+00 1.250000e-01 8.057718e-03
+%51 1.000000e+00 2.500000e-01 1.330577e-01
+%52 1.000000e+00 -5.000000e-01 6.169423e-01
+%53 1.000000e+00 1.000000e+00 8.830577e-01
+%54 1.000000e+00 0.000000e+00 1.169423e-01
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        h & $\tilde{f}'(x_0)$ & Błąd bezwzględny \\
+        \hline
+        $2^{0}$ & $8.694677 \cdot 10^{-1}$ & $7.525254 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-1}$ & $4.730729 \cdot 10^{-1}$ & $3.561306 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-2}$ & $2.998405 \cdot 10^{-1}$ & $1.828982 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-3}$ & $2.507786 \cdot 10^{-1}$ & $1.338363 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-4}$ & $2.381337 \cdot 10^{-1}$ & $1.211914 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-5}$ & $2.349485 \cdot 10^{-1}$ & $1.180062 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-6}$ & $2.341506 \cdot 10^{-1}$ & $1.172084 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-7}$ & $2.339511 \cdot 10^{-1}$ & $1.170088 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-8}$ & $2.339012 \cdot 10^{-1}$ & $1.169589 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-9}$ & $2.338887 \cdot 10^{-1}$ & $1.169464 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-10}$ & $2.338856 \cdot 10^{-1}$ & $1.169433 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-11}$ & $2.338848 \cdot 10^{-1}$ & $1.169425 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-12}$ & $2.338846 \cdot 10^{-1}$ & $1.169423 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-13}$ & $2.338846 \cdot 10^{-1}$ & $1.169423 \cdot 10^{-1}$ \\
+        \hline
+        \dots & \dots & \dots \\
+        \hline
+        $2^{-50}$ & $1.250000 \cdot 10^{-1}$ & $8.057718 \cdot 10^{-3}$ \\
+        \hline
+        $2^{-51}$ & $2.500000 \cdot 10^{-1}$ & $1.330577 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-52}$ & $-5.000000 \cdot 10^{-1}$ & $6.169423 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-53}$ & $1.000000 \cdot 10^{0}$ & $8.830577 \cdot 10^{-1}$ \\
+        \hline
+        $2^{-54}$ & $0.000000 \cdot 10^{0}$ & $1.169423 \cdot 10^{-1}$ \\
+        \hline
+    \end{tabular}
+    \label{tab:pochodna}
+\end{table}\\
+Analizując otrzymane wyniki, możemy zauważyć, że początkowo wraz ze zmniejszaniem wartości $h$ błąd bezwzględny przybliżenia pochodnej również się zmniejsza. Jednak od pewnego momentu (około $h = 2^{-27}$) błąd zaczyna rosnąć wraz ze zmniejszaniem wartości $h$. Dzieje się tak ze względu na błąd zaokrągleń, który zaczyna dominować nad błędem wynikającym z przybliżenia różnicowego. Gdy $h$ jest bardzo małe, różnica $f(x_0 + h) - f(x_0)$ staje się bardzo mała i może być reprezentowana z ograniczoną precyzją arytmetyki zmiennoprzecinkowej, co prowadzi do znacznych błędów w obliczeniach.
+
+\end{document}
+

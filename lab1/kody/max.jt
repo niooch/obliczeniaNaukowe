@@ -1,0 +1,34 @@
+#Jakub Kogut
+using Printf
+
+function mashineMax(::Type{T}) where {T<:AbstractFloat}
+    #wyznaczenie precyzji p
+    oneT = one(T)
+    step = oneT
+    p = 0
+    while oneT + step/2 != oneT
+        step /= 2
+        p += 1
+    end
+
+    #wyznaczenie maksymalnej cechy 2^emax
+    x = oneT
+    e = 0
+    while !isinf(x * T(2))
+        x *= T(2)
+        e += 1
+    end
+
+    #zwrocenie wyniku zgodnie ze wzorem
+    return (T(2) - T(2)^(-T(p - 1))) * T(2)^(T(e))
+end
+
+function main()
+    for T in (Float16, Float32, Float64)
+        max_value = mashineMax(T)
+        @printf("Maksymalna wartość typu %s: %.10e\n", string(T), max_value)
+        @printf("floatmax(%s):               %.10e\n\n", string(T), floatmax(T))
+    end
+end
+
+main()

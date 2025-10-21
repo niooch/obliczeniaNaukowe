@@ -1,0 +1,21 @@
+#Jakub Kogut
+using Printf
+
+function mashineEta(::Type{T}) where {T<:AbstractFloat}
+    x = one(T)
+    zeroT = zero(T)
+    while (x/2) > zeroT
+        x /= 2
+    end
+    return x
+end
+
+function main()
+    for T in (Float16, Float32, Float64)
+        eta = mashineEta(T)
+        @printf("Machine eta for %s: %.20e\n", string(T), eta)
+        @printf("nextfloat(%s(0.0)): %.20e\n\n", string(T), nextfloat(T(0.0)))
+    end
+end
+
+main()

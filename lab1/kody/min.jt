@@ -1,0 +1,9 @@
+#Jakub Kogut
+using Printf 
+
+function main()
+    @printf("floatmin(Float32) = %e\n", floatmin(Float32))
+    @printf("floatmin(Float64) = %e\n", floatmin(Float64))
+end
+
+main()

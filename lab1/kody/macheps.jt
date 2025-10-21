@@ -1,0 +1,21 @@
+#Jakub Kogut
+
+using Printf
+
+function macheps(::Type{T}) where {T<:AbstractFloat}
+    oneT = one(T)
+    eps = one(T)
+    while oneT + eps / 2 > oneT
+        eps /= 2
+    end
+    return eps
+end
+
+function main()
+    for T in (Float16, Float32, Float64)
+        @printf("macheps %s: %.37e\n", string(T), macheps(T))
+        @printf("eps %s:     %.37e\n\n", string(T), eps(T))
+    end
+end
+
+main()
