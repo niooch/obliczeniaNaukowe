@@ -61,7 +61,11 @@ Aby znaleść daną liczbe iteracyjne można dodwać do $1$ coraz mniejsze potę
 Z wyników można wnioskować, że eksperymentalnie wyznaczone wartości $macheps$ zgadzają się z teoretycznymi wartościami $eps(T)$ dla poszczególnych typów zmiennoprzecinkowych, jak i również z wartościami podanymi w pliku float.h.\\
 Z eksperymentu wynika, że zwiększając precyzję reprezentacji liczby zmiennoprzecinkowej, zmniejsza się wartość $macheps$. Oznacza to, że liczby reprezentowane z większą precyzją mogą być bliżej siebie, co pozwala na dokładniejsze obliczenia.\\
 \textbf{Związek $macheps$ z precyzją arytmetyki}\\
-Jest to ta sama liczba, na wykładzie oznaczaliśmy przez $\epsilon$ najmniejszą możliwą liczbę w danej arytmetyce, taką że $fl(1 + \epsilon) > 1$. W związku z tym $macheps$ jest miarą precyzji danej arytmetyki zmiennoprzecinkowej.
+Występuje następująca zależność:
+\[
+    macheps = 2 \cdot \epsilon
+\]
+na wykładzie oznaczaliśmy przez $\epsilon$ najmniejszą możliwą liczbę w danej arytmetyce, taką że $fl(1 + \epsilon) > 1$. W związku z tym $macheps$ jest podwojoną miarą precyzji danej arytmetyki zmiennoprzecinkowej.
 
 \subsection{Najmniejsza Dodatnia Liczba Maszynowa}
 W kolejnej części zadania należało wyznaczyć kolejną liczbę identyfikującą arytmetykę -- $\eta$ taką, że
