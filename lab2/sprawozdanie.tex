@@ -192,6 +192,429 @@ Poniżej w tabelach znajdują się wyniki eksperymentów dla macierzy Hilberta o
 \end{table}
 
 \subsection{Wnioski}
-Dla wysokiego wskaźnika uwarunkowania, nie zależnie od rozmiuaru macierzy, obie metody dają duże błędy, jednak metoda eliminacji Gaussa radzi sobie lepiej niż metoda z macierzą odwrotną. Natomiast próbując rozwiązać układ równań dla macierzy Hilberta zwiększając jej rozmiar, błąd rośnie bardzo szybko, co pokazuje, że macierze Hilberta są źle uwarunkowane. W przypadku macierzy losowych błąd również rośnie ze wzrostem wskaźnika uwarunkowania, jednakże nie jest to tak drastyczne jak w przypadku 
+Dla wysokiego wskaźnika uwarunkowania, nie zależnie od rozmiuaru macierzy, obie metody dają duże błędy, jednak metoda eliminacji Gaussa radzi sobie lepiej niż metoda z macierzą odwrotną. Natomiast próbując rozwiązać układ równań dla macierzy Hilberta zwiększając jej rozmiar, błąd rośnie bardzo szybko, co pokazuje, że macierze Hilberta są źle uwarunkowane. 
+
+\section{Zadanie 4}
+\subsection{Opis problemu}
+W zadaniu należy sprawdzić zachowanie programu obliczającego zera wielomianu Wilkinsona poprzez obliczenie jego zer dla postaci iloczynowej oraz rozwiniętej. Następnie zabużyć dane wejściowe i ponownie obliczyć zera wielomianu.
+\subsection{Rozwiązanie}
+Do policzenia zer wielomianu Wilkinsona użyłem funkcji \texttt{roots}. Następnie na ich podstawie obliczyłem wartość wielomianu w postaci iloczynowej jak i rozwiniętej. Powtarzam eksperyment dla zaburzonych danych: $a_{19} \rightarrow a_{19} + 2^{-23}$.
+\subsection{Wyniki}
+Poniższa tabela przedstawia wyniki eksperymentu. $p(x)$ to wartość wielomianu w postaci rozwiniętej, natomiast $P(x)$ to wartość wielomianu w postaci iloczynowej.
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        $k$ & $z_k$ & $|z_k - k|$ & $p(z_k)$ & $P(z_k)$ \\
+        \hline
+        1 & 1.00000 & $3.01092 \cdot 10^{-13}$ & $3.56965 \cdot 10^{4}$ & $3.66264 \cdot 10^{4}$ \\
+        \hline
+        2 & 2.00000 & $2.83182 \cdot 10^{-11}$ & $1.76253 \cdot 10^{5}$ & $1.81304 \cdot 10^{5}$ \\
+        \hline
+        3 & 3.00000 & $4.07903 \cdot 10^{-10}$ & $2.79158 \cdot 10^{5}$ & $2.90172 \cdot 10^{5}$ \\
+        \hline
+        4 & 4.00000 & $1.62625 \cdot 10^{-8}$ & $3.02711 \cdot 10^{6}$ & $2.04154 \cdot 10^{6}$ \\
+        \hline
+        5 & 5.00000 & $6.65770 \cdot 10^{-7}$ & $2.29175 \cdot 10^{7}$ & $2.08946 \cdot 10^{7}$ \\
+        \hline
+        6 & 5.99999 & $1.07542 \cdot 10^{-5}$ & $1.29024 \cdot 10^{8}$ & $1.12505 \cdot 10^{8}$ \\
+        \hline
+        7 & 7.00010 & $1.02003 \cdot 10^{-4}$ & $4.80511 \cdot 10^{8}$ & $4.57291 \cdot 10^{8}$ \\
+        \hline
+        8 & 7.99936 & $6.44170 \cdot 10^{-4}$ & $1.63795 \cdot 10^{9}$ & $1.55565 \cdot 10^{9}$ \\
+        \hline
+        9 & 9.00292 & $2.91529 \cdot 10^{-3}$ & $4.87707 \cdot 10^{9}$ & $4.68782 \cdot 10^{9}$ \\
+        \hline
+        10 & 9.99041 & $9.58696 \cdot 10^{-3}$ & $1.36386 \cdot 10^{10}$ & $1.26346 \cdot 10^{10}$ \\
+        \hline
+        11 & 11.02502 & $2.50229 \cdot 10^{-2}$ & $3.58563 \cdot 10^{10}$ & $3.30013 \cdot 10^{10}$ \\
+        \hline
+        12 & 11.95328 & $4.67167 \cdot 10^{-2}$ & $7.53333 \cdot 10^{10}$ & $7.38853 \cdot 10^{10}$ \\
+        \hline
+        13 & 13.07431 & $7.43140 \cdot 10^{-2}$ & $1.96060 \cdot 10^{11}$ & $1.84762 \cdot 10^{11}$ \\
+        \hline
+        14 & 13.91476 & $8.52444 \cdot 10^{-2}$ & $3.57513 \cdot 10^{11}$ & $3.55143 \cdot 10^{11}$ \\
+        \hline
+        15 & 15.07549 & $7.54938 \cdot 10^{-2}$ & $8.21627 \cdot 10^{11}$ & $8.42320 \cdot 10^{11}$ \\
+        \hline
+        16 & 15.94629 & $5.37133 \cdot 10^{-2}$ & $1.55150 \cdot 10^{12}$ & $1.57073 \cdot 10^{12}$ \\
+        \hline
+        17 & 17.02543 & $2.54271 \cdot 10^{-2}$ & $3.69474 \cdot 10^{12}$ & $3.31698 \cdot 10^{12}$ \\
+        \hline
+        18 & 17.99092 & $9.07865 \cdot 10^{-3}$ & $7.65011 \cdot 10^{12}$ & $6.34485 \cdot 10^{12}$ \\
+        \hline
+        19 & 19.00191 & $1.90982 \cdot 10^{-3}$ & $1.14353 \cdot 10^{13}$ & $1.22857 \cdot 10^{13}$ \\
+        \hline
+        20 & 19.99981 & $1.90709 \cdot 10^{-4}$ & $2.79241 \cdot 10^{13}$ & $2.31831 \cdot 10^{13}$ \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki eksperymentu dla wielomianu Wilkinsona dla niezaburzonych danych}
+    \label{tab:wilk}
+\end{table}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+\hline
+$k$ & $z_k$ & $|z_k-k|$ & $p(z_k)$ & $P(z_k)$\\
+\hline
+1  & $1.00000$ & $1.96287\cdot 10^{-13}$ & $2.44281\cdot 10^{4}$ & $2.38774\cdot 10^{4}$\\
+\hline
+2  & $2.00000$ & $1.47216\cdot 10^{-12}$ & $6.31468\cdot 10^{3}$ & $9.42529\cdot 10^{3}$\\
+\hline
+3  & $3.00000$ & $4.71376\cdot 10^{-10}$ & $4.21927\cdot 10^{5}$ & $3.35325\cdot 10^{5}$\\
+\hline
+4  & $4.00000$ & $1.19526\cdot 10^{-8}$  & $2.21907\cdot 10^{6}$ & $1.50048\cdot 10^{6}$\\
+\hline
+5  & $5.00000$ & $1.66405\cdot 10^{-7}$  & $6.22740\cdot 10^{6}$ & $5.22248\cdot 10^{6}$\\
+\hline
+6  & $5.99999$ & $7.05052\cdot 10^{-6}$  & $6.47173\cdot 10^{6}$ & $7.37588\cdot 10^{7}$\\
+\hline
+7  & $7.00030$ & $3.00994\cdot 10^{-4}$  & $3.06399\cdot 10^{7}$ & $1.34920\cdot 10^{9}$\\
+\hline
+8  & $7.99303$ & $6.96666\cdot 10^{-3}$  & $1.27955\cdot 10^{7}$ & $1.68773\cdot 10^{10}$\\
+\hline
+9  & $9.14748$ & $1.47477\cdot 10^{-1}$  & $7.24061\cdot 10^{7}$ & $2.19467\cdot 10^{11}$\\
+\hline
+10 & $9.50162$ & $4.98377\cdot 10^{-1}$  & $1.18200\cdot 10^{9}$ & $4.51692\cdot 10^{11}$\\
+\hline
+11 & $10.95346$ & $4.65447\cdot 10^{-2}$ & $6.78876\cdot 10^{12}$ & $6.08024\cdot 10^{10}$\\
+\hline
+12 & $10.95346$ & $1.04654\cdot 10^{0}$ & $6.78876\cdot 10^{12}$ & $6.08024\cdot 10^{10}$\\
+\hline
+13 & $12.99643$ & $3.56977\cdot 10^{-3}$ & $1.73366\cdot 10^{14}$ & $8.60218\cdot 10^{9}$\\
+\hline
+14 & $12.99643$ & $1.00357\cdot 10^{0}$ & $1.73366\cdot 10^{14}$ & $8.60218\cdot 10^{9}$\\
+\hline
+15 & $15.55554$ & $5.55539\cdot 10^{-1}$ & $5.26786\cdot 10^{15}$ & $5.84171\cdot 10^{12}$\\
+\hline
+16 & $15.55554$ & $4.44461\cdot 10^{-1}$ & $5.26786\cdot 10^{15}$ & $5.84171\cdot 10^{12}$\\
+\hline
+17 & $18.35914$ & $1.35914\cdot 10^{0}$ & $1.23311\cdot 10^{17}$ & $4.23334\cdot 10^{14}$\\
+\hline
+18 & $18.35914$ & $3.59140\cdot 10^{-1}$ & $1.23311\cdot 10^{17}$ & $4.23334\cdot 10^{14}$\\
+\hline
+19 & $20.50312$ & $1.50312\cdot 10^{0}$ & $1.31182\cdot 10^{18}$ & $3.09764\cdot 10^{17}$\\
+\hline
+20 & $20.50312$ & $5.03121\cdot 10^{-1}$ & $1.31182\cdot 10^{18}$ & $3.09764\cdot 10^{17}$\\
+\hline
+\end{tabular}
+
+\caption{Wyniki eksperymentu dla wielomianu Wilkinsona dla zaburzonych danych\footnote{W miejscach gdzie pojawiają się liczby urojone biorę ich moduł}}
+\end{table}
+
+\subsection{Wnioski}
+Na podstawie wyników zaburzonych można stwierdzić, że zadanie wyznaczania pierwiastków wielomianu Wilkinsona jest źle uwarunkowane, ponieważ nawet niewielka zmiana współczynnika powoduje duże zmiany w pierwiastkach oraz wartościach wielomianu w tych pierwiastkach. Dodatkowo można zauważyć, że wartości wielomianu w wyliczonym zerze znacznie różnią się od teoretycznej wartości 0, co wynika z braku precyzji arytmetyki Float64. Nie jesteśmy w stanie dokładnie przechować współczynników wielomianu, co powoduje błędy w obliczeniach.
+
+\section{Zadanie 5}
+\subsection{Opis problemu}
+Mamy podane pewne równanie rekurencyjne opisujące rozmiar populacji w zależności od stanu poprzedniego pokolenia:
+\[
+    p_{n+1}= p_n + r p_n (1 - p_n)
+\]
+Należy przeprowadzić eksperyment porównujący zachowanie się równania dla 40 iteracji w artymetyce Float32 oraz Float64. Następnie w trakcie obliczeń należy wprowadzić niewielkie zaburzenie do wartości $p_{10}$ i ponownie wznowić obliczenia.
+\subsection{Rozwiązanie}
+Do rozwiązania zadania napisałem prostą pętlę iterującą 40 razy po równaniu rekurencyjnym.
+\subsection{Wyniki}
+%i, pF32, pF32 stopped, pF64
+%1, 0.0397000, 0.0397000, 0.039700000000000
+%2, 0.1540717, 0.1540717, 0.154071730000000
+%3, 0.5450726, 0.5450726, 0.545072626044421
+%4, 1.2889781, 1.2889781, 1.288978001188801
+%5, 0.1715188, 0.1715188, 0.171519142109176
+%6, 0.5978191, 0.5978191, 0.597820120107099
+%7, 1.3191134, 1.3191134, 1.319113792413797
+%8, 0.0562732, 0.0562732, 0.056271577646257
+%9, 0.2155929, 0.2155929, 0.215586839232630
+%10, 0.7229306, 0.7229306, 0.722914301179573
+%11, 1.3238364, 1.3241479, 1.323841944168441
+%12, 0.0377170, 0.0364884, 0.037695297254732
+%13, 0.1466002, 0.1419594, 0.146518382713559
+%14, 0.5219260, 0.5073804, 0.521670621435246
+%15, 1.2704837, 1.2572169, 1.270261773935077
+%16, 0.2395482, 0.2870845, 0.240352172778243
+%17, 0.7860428, 0.9010855, 0.788101190235304
+%18, 1.2905813, 1.1684768, 1.289094302790307
+%19, 0.1655247, 0.5778930, 0.171084846701943
+%20, 0.5799036, 1.3096911, 0.596529312494691
+%21, 1.3107498, 0.0928922, 1.318575587982598
+%22, 0.0888042, 0.3456818, 0.058377608259431
+%23, 0.3315584, 1.0242395, 0.223286597599448
+%24, 0.9964407, 0.9497582, 0.743575676395179
+%25, 1.0070806, 1.0929108, 1.315588346001072
+%26, 0.9856885, 0.7882812, 0.070035295602779
+%27, 1.0280086, 1.2889631, 0.265426354520610
+%28, 0.9416294, 0.1715748, 0.850351969060138
+%29, 1.1065198, 0.5979856, 1.232112462387190
+%30, 0.7529209, 1.3191822, 0.374146489639287
+%31, 1.3110139, 0.0560039, 1.076629171428944
+%32, 0.0877831, 0.2146064, 0.829125567400452
+%33, 0.3280148, 0.7202578, 1.254154650050444
+%34, 0.9892781, 1.3247173, 0.297906941472321
+%35, 1.0210990, 0.0342414, 0.925382128557105
+%36, 0.9564666, 0.1334483, 1.132532262669786
+%37, 1.0813814, 0.4803680, 0.682241072715310
+%38, 0.8173683, 1.2292118, 1.332605646962029
+%39, 1.2652004, 0.3839622, 0.002909156902851
+%40, 0.2586055, 1.0935680, 0.011611238029749
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Iteracja & $p_n$ Float32 & $p_n$ Float32 po zaburzeniu & $p_n$ Float64 \\
+        \hline
+        1 & 0.0397000 & 0.0397000 & 0.039700000000000 \\
+        \hline
+        2 & 0.1540717 & 0.1540717 & 0.154071730000000 \\
+        \hline
+        3 & 0.5450726 & 0.5450726 & 0.545072626044421 \\
+        \hline
+        4 & 1.2889781 & 1.2889781 & 1.288978001188801 \\
+        \hline
+        5 & 0.1715188 & 0.1715188 & 0.171519142109176 \\
+        \hline
+        6 & 0.5978191 & 0.5978191 & 0.597820120107099 \\
+        \hline
+        7 & 1.3191134 & 1.3191134 & 1.319113792413797 \\
+        \hline
+        8 & 0.0562732 & 0.0562732 & 0.056271577646257 \\
+        \hline
+        9 & 0.2155929 & 0.2155929 & 0.215586839232630 \\
+        \hline
+        10 & 0.7229306 & 0.7229306 & 0.722914301179573 \\
+        \hline
+        11 & 1.3238364 & 1.3241479 & 1.323841944168441 \\
+        \hline
+        12 & 0.0377170 & 0.0364884 & 0.037695297254732 \\
+        \hline
+        13 & 0.1466002 & 0.1419594 & 0.146518382713559 \\
+        \hline
+        14 & 0.5219260 & 0.5073804 & 0.521670621435246 \\
+        \hline
+        15 & 1.2704837 & 1.2572169 & 1.270261773935077 \\
+        \hline
+        16 & 0.2395482 & 0.2870845 & 0.240352172778243 \\
+        \hline
+        17 & 0.7860428 & 0.9010855 & 0.788101190235304 \\
+        \hline
+        18 & 1.2905813 & 1.1684768 & 1.289094302790307 \\
+        \hline
+        19 & 0.1655247 & 0.5778930 & 0.171084846701943 \\
+        \hline
+        20 & 0.5799036 & 1.3096911 & 0.596529312494691 \\
+        \hline
+        21 & 1.3107498 & 0.0928922 & 1.318575587982598 \\
+        \hline
+        22 & 0.0888042 & 0.3456818 & 0.058377608259431 \\
+        \hline
+        23 & 0.3315584 & 1.0242395 & 0.223286597599448 \\
+        \hline
+        24 & 0.9964407 & 0.9497582 & 0.743575676395179 \\
+        \hline
+        25 & 1.0070806 & 1.0929108 & 1.315588346001072 \\
+        \hline
+        26 & 0.9856885 & 0.7882812 & 0.070035295602779 \\
+        \hline
+        27 & 1.0280086 & 1.2889631 & 0.265426354520610 \\
+        \hline
+        28 & 0.9416294 & 0.1715748 & 0.850351969060138 \\
+        \hline
+        29 & 1.1065198 & 0.5979856 & 1.232112462387190 \\
+        \hline
+        30 & 0.7529209 & 1.3191822 & 0.374146489639287 \\
+        \hline
+        31 & 1.3110139 & 0.0560039 & 1.076629171428944 \\
+        \hline
+        32 & 0.0877831 & 0.2146064 & 0.829125567400452 \\
+        \hline
+        33 & 0.3280148 & 0.7202578 & 1.254154650050444 \\
+        \hline
+        34 & 0.9892781 & 1.3247173 & 0.297906941472321 \\
+        \hline
+        35 & 1.0210990 & 0.0342414 & 0.925382128557105 \\
+        \hline
+        36 & 0.9564666 & 0.1334483 & 1.132532262669786 \\
+        \hline
+        37 & 1.0813814 & 0.4803680 & 0.682241072715310 \\
+        \hline
+        38 & 0.8173683 & 1.2292118 & 1.332605646962029 \\
+        \hline
+        39 & 1.2652004 & 0.3839622 & 0.002909156902851 \\
+        \hline
+        40 & 0.2586055 & 1.0935680 & 0.011611238029749 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki eksperymentu dla równania rekurencyjnego}
+    \label{tab:rekur}
+\end{table}
+\subsection{Wnioski}
+Widać, że taki rekurencyjny proces jest bardzo wrażliwy na zaburzenia, ponieważ nawet niewielka zmiana wartości w $p_{10}$ powoduje ogromne różnice w dalszych iteracjach. 
+
+\section{Zadanie 6}
+\subsection{Opis problemu}
+Podobnie jak w porzednim zadaniu, mamy sprawdzić zachowanie się równiania rekurencyjnego:
+\[
+    x_{n+1}=x_n^2 + c
+\]
+dla różnych wartości parametru $c$ oraz różnych wartości początkowych $x_0$. Należy przeprowadzić eksperyment dla arytmetyki Float64.
+\subsection{Rozwiązanie}
+Poniżej tabela z wynikami eksperymentu.
+% Tabela 1: c=-2,x0=1 ; c=2,x0=2 ; c=-2,x0≈2
+\begin{table}[!ht]
+    \centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+$n$ &
+$x_n$ ($c=-2,\,x_0=1$) &
+$x_n$ ($c=2,\,x_0=2$) &
+$x_n$ ($c=-2,\,x_0=1.99999999999999$) \\
+\hline
+1  & $-1.000000$ & $6.000000$ & $2.000000$\\ \hline
+2  & $-1.000000$ & $3.800000\cdot 10^{1}$ & $2.000000$\\ \hline
+3  & $-1.000000$ & $1.446000\cdot 10^{3}$ & $2.000000$\\ \hline
+4  & $-1.000000$ & $2.090918\cdot 10^{6}$ & $2.000000$\\ \hline
+5  & $-1.000000$ & $4.371938\cdot 10^{12}$ & $2.000000$\\ \hline
+6  & $-1.000000$ & $1.911384\cdot 10^{25}$ & $2.000000$\\ \hline
+7  & $-1.000000$ & $3.653390\cdot 10^{50}$ & $2.000000$\\ \hline
+8  & $-1.000000$ & $1.334726\cdot 10^{101}$ & $2.000000$\\ \hline
+9  & $-1.000000$ & $1.781493\cdot 10^{202}$ & $2.000000$\\ \hline
+10 & $-1.000000$ & $\infty$ & $2.000000$\\ \hline
+11 & $-1.000000$ & $\infty$ & $2.000000$\\ \hline
+12 & $-1.000000$ & $\infty$ & $2.000000$\\ \hline
+13 & $-1.000000$ & $\infty$ & $1.999999$\\ \hline
+14 & $-1.000000$ & $\infty$ & $1.999997$\\ \hline
+15 & $-1.000000$ & $\infty$ & $1.999989$\\ \hline
+16 & $-1.000000$ & $\infty$ & $1.999957$\\ \hline
+17 & $-1.000000$ & $\infty$ & $1.999828$\\ \hline
+18 & $-1.000000$ & $\infty$ & $1.999313$\\ \hline
+19 & $-1.000000$ & $\infty$ & $1.997254$\\ \hline
+20 & $-1.000000$ & $\infty$ & $1.989024$\\ \hline
+21 & $-1.000000$ & $\infty$ & $1.956215$\\ \hline
+22 & $-1.000000$ & $\infty$ & $1.826779$\\ \hline
+23 & $-1.000000$ & $\infty$ & $1.337120$\\ \hline
+24 & $-1.000000$ & $\infty$ & $-2.121097\cdot 10^{-1}$\\ \hline
+25 & $-1.000000$ & $\infty$ & $-1.955009$\\ \hline
+26 & $-1.000000$ & $\infty$ & $1.822062$\\ \hline
+27 & $-1.000000$ & $\infty$ & $1.319910$\\ \hline
+28 & $-1.000000$ & $\infty$ & $-2.578368\cdot 10^{-1}$\\ \hline
+29 & $-1.000000$ & $\infty$ & $-1.933520$\\ \hline
+30 & $-1.000000$ & $\infty$ & $1.738500$\\ \hline
+31 & $-1.000000$ & $\infty$ & $1.022383$\\ \hline
+32 & $-1.000000$ & $\infty$ & $-9.547330\cdot 10^{-1}$\\ \hline
+33 & $-1.000000$ & $\infty$ & $-1.088485$\\ \hline
+34 & $-1.000000$ & $\infty$ & $-8.152007\cdot 10^{-1}$\\ \hline
+35 & $-1.000000$ & $\infty$ & $-1.335448$\\ \hline
+36 & $-1.000000$ & $\infty$ & $-2.165791\cdot 10^{-1}$\\ \hline
+37 & $-1.000000$ & $\infty$ & $-1.953094$\\ \hline
+38 & $-1.000000$ & $\infty$ & $1.814574$\\ \hline
+39 & $-1.000000$ & $\infty$ & $1.292680$\\ \hline
+40 & $-1.000000$ & $\infty$ & $-3.289791\cdot 10^{-1}$\\
+\hline
+\end{tabular}
+    \caption{Wyniki eksperymentu dla równania rekurencyjnego z różnymi parametrami}
+    \label{tab:rekur2}
+\end{table}
+\begin{table}[!ht]
+    \centering
+% Tabela 2: przypadki c=-1
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$n$ &
+$x_n$ ($c=-1,\,x_0=1$) &
+$x_n$ ($c=-1,\,x_0=-1$) &
+$x_n$ ($c=-1,\,x_0=0.75$) &
+$x_n$ ($c=-1,\,x_0=0.25$) \\
+\hline
+1  & $0.000000$ & $0.000000$ & $-4.375000\cdot 10^{-1}$ & $-9.375000\cdot 10^{-1}$\\ \hline
+2  & $-1.000000$ & $-1.000000$ & $-8.085938\cdot 10^{-1}$ & $-1.210938\cdot 10^{-1}$\\ \hline
+3  & $0.000000$ & $0.000000$ & $-3.461761\cdot 10^{-1}$ & $-9.853363\cdot 10^{-1}$\\ \hline
+4  & $-1.000000$ & $-1.000000$ & $-8.801621\cdot 10^{-1}$ & $-2.911237\cdot 10^{-2}$\\ \hline
+5  & $0.000000$ & $0.000000$ & $-2.253147\cdot 10^{-1}$ & $-9.991525\cdot 10^{-1}$\\ \hline
+6  & $-1.000000$ & $-1.000000$ & $-9.492333\cdot 10^{-1}$ & $-1.694342\cdot 10^{-3}$\\ \hline
+7  & $0.000000$ & $0.000000$ & $-9.895619\cdot 10^{-2}$ & $-9.999971\cdot 10^{-1}$\\ \hline
+8  & $-1.000000$ & $-1.000000$ & $-9.902077\cdot 10^{-1}$ & $-5.741579\cdot 10^{-6}$\\ \hline
+9  & $0.000000$ & $0.000000$ & $-1.948876\cdot 10^{-2}$ & $-1.000000$\\ \hline
+10 & $-1.000000$ & $-1.000000$ & $-9.996202\cdot 10^{-1}$ & $-6.593148\cdot 10^{-11}$\\ \hline
+11 & $0.000000$ & $0.000000$ & $-7.594796\cdot 10^{-4}$ & $-1.000000$\\ \hline
+12 & $-1.000000$ & $-1.000000$ & $-9.999994\cdot 10^{-1}$ & $0.000000$\\ \hline
+13 & $0.000000$ & $0.000000$ & $-1.153618\cdot 10^{-6}$ & $-1.000000$\\ \hline
+14 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+15 & $0.000000$ & $0.000000$ & $-2.661649\cdot 10^{-12}$ & $-1.000000$\\ \hline
+16 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+17 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+18 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+19 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+20 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+21 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+22 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+23 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+24 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+25 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+26 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+27 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+28 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+29 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+30 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+31 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+32 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+33 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+34 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+35 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+36 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+37 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+38 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\ \hline
+39 & $0.000000$ & $0.000000$ & $0.000000$ & $-1.000000$\\ \hline
+40 & $-1.000000$ & $-1.000000$ & $-1.000000$ & $0.000000$\\
+\hline
+\end{tabular}
+    \caption{Wyniki eksperymentu dla równania rekurencyjnego dla $c=-1$ i różnych wartości początkowych}
+    \label{tab:rekur3}
+\end{table}
+
+\subsection{Wnioski}
+Równanie rekurencyjne można zinterpretować graficznie:
+%wstaw wykresy w wykresy/wykresN.png gdzie N od 1 do 7
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykresy/wykres1.png}
+    \caption{Wykres dla $c=-2$, $x_0=1$}
+    \label{fig:wyk1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykresy/wykres2.png}
+    \caption{Wykres dla $c=2$, $x_0=2$}
+    \label{fig:wyk2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykresy/wykres3.png}
+    \caption{Wykres dla $c=-2$, $x_0\approx2$}
+    \label{fig:wyk3}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykresy/wykres4.png}
+    \caption{Wykres dla $c=-1$, $x_0=1$}
+    \label{fig:wyk4}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykresy/wykres5.png}
+    \caption{Wykres dla $c=-1$, $x_0=-1$}
+    \label{fig:wyk5}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykresy/wykres6.png}
+    \caption{Wykres dla $c=-1$, $x_0=0.75$}
+    \label{fig:wyk6}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wykresy/wykres7.png}
+    \caption{Wykres dla $c=-1$, $x_0=0.25$}
+    \label{fig:wyk7}
+\end{figure}
+
 
 \end{document}

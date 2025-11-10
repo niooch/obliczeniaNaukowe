@@ -1,6 +1,7 @@
 #Jakub Kogut
 using Polynomials
 using Printf 
+
 coeffs = [
     2432902008176640000.0,
     -8752948036761600000.0,
@@ -25,21 +26,36 @@ coeffs = [
     1.0, 
 ]
 
-
-wilkinsonRozszerzenie= Polynomial(coeffs)
-
-function wilkinson(x)
-    result = 1.0
+#postac iloczynowa wielomianu
+function P(x)
+    wynik = 1.0
     for k in 1:20
-        result *= (x - k)
+        wynik *= (x - k)
     end
-    return result
+    return wynik
 end
 
-#znajdz pierwiastki w postaci rozszerzonej
-iloczyn = roots(wilkinsonRozszerzenie)
-println("Pierwiastki wielomianu Wilkinsona w postaci rozszerzonej:")
-for r in iloczyn
-    @printf("%.10f\n", r)
+function obliczPierwiastki(coeffs)
+    p = Polynomial(coeffs)
+    pierwiastki = roots(p)
+
+    @printf("k, z_k, abs(z_k - k), p(z_k), P(z_k)\n")
+    for k in 1:length(coeffs)-1
+        z = pierwiastki[k]
+        z_eff = isreal(z) ? real(z) : abs(z)
+
+        odleglosc = abs(z_eff - k)
+        pval = p(z_eff)
+        Pval = P(z_eff)   
+
+        @printf("%d, %.5f, %.5e, %.5e, %.5e\n", k, z_eff, odleglosc, abs(pval), abs(Pval))
+    end
 end
 
+
+obliczPierwiastki(coeffs)
+
+#zaburzenie danych
+coeffs[20] += 1/(2^23)
+#@printf("%f\n", coeffs[20])
+obliczPierwiastki(coeffs)
