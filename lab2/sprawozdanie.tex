@@ -1,0 +1,197 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage[final]{microtype}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % czyść wszystko
+\lhead{Sprawozdanie -- Lista 2.}
+\rhead{\leftmark}
+\cfoot{\thepage}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{siunitx} % jeżeli potrzebne jednostki
+\sisetup{locale = PL} % separator 1,23 (polski), można zmienić na locale=PL gdy dostępne
+\usepackage{bm}       % pogrubione symbole
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{csquotes}
+
+\usepackage{enumitem}
+\setlist{noitemsep,topsep=3pt}
+\usepackage{xcolor}
+\setlength{\headheight}{13.59999pt}
+
+\title{Obliczenia Naukowe -- Sprawozdanie Laboratoria 2.}
+\author{Jakub Kogut}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Zadanie 1}
+\subsection{Opis problemu}
+W zadaniu należało powtórzyć eksperyment z zadania 5. z listy 1., jednakże ze zmienionymi danymi wejściowymi i zaobserwować ich wpływ.
+\subsection{Rozwiązanie}
+Wykorzystałem kod z poprzedniego zadania, zmieniając jedynie dane wejściowe, zgodnie z poleceniem: usunąłem ostatnią 9 z $x_4$ oraz ostatnią 7 z $x_5$.
+\subsection{Wyniki}
+Tabela przedstawia wyniki eksperymentu oraz porównanie z wynikami na starych danych.
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Algorytm & Float32 Stare & Float64 Stare & Float32 Nowe &Float64 Nowe\\
+        \hline
+        ``w przód'' & $-4.9994430 \cdot 10^{-1}$ & $1.025188136829 \cdot 10^{-10}$ &$-4.9994430 \cdot 10^{-1} $& $-4.296342739891\cdot 10^{-3}$\\
+        \hline
+        ``w tył'' & $-4.5434570 \cdot 10^{-1}$ & $-1.564330887049 \cdot 10^{-10}$ &$-4.5434570\cdot 10^{-1}$&$-4.296342998713\cdot 10^{-3}$\\
+        \hline
+        rosnąco\footnote{co do wartości bezwzględnej} & $-5.0000000 \cdot 10^{-1}$ & $0.000000000000 \cdot 10^{0}$ & $-5.0000000 \cdot 10^{-1}$&$-4.296342842280\cdot 10^{-3}$\\
+        \hline
+        malejąco & $-5.0000000 \cdot 10^{-1}$ & $0.000000000000\cdot 10^{0}$&$-5.0000000 \cdot 10^{-1}$&$-4.296342842280\cdot 10^{-3}$ \\
+        \hline
+    \end{tabular}
+    \label{tab:iloczyn}
+\end{table}
+\subsection{Wnioski}
+Można zauważyć że wyniki dla Float32 nie uległy zmianie, natomiast dla Float64 zmieniły się znacząco. Dzieje się tak dlatego, że w przypadku Float32 precyzja jest na tyle niska, że usunięcie tych elementów nie miało wpływu na wynik końcowy. W przypadku Float64 precyzja jest dużo większa, więc niewielka zmiana w danych wejściowych miała wpływ na wynik końcowy, po czym można wnioskować, że zadanie policzenia iloczynu skalarnego jest źle uwarunkowane.
+
+\section{Zadanie 2}
+\subsection{Opis problemu}
+W zadaniu należy narysować wykres funkcji $f(x) = e^x \ln(1 + e^{-x})$ przy użyciu dwóch programów do wizualizacji. Następnie należy policzyć granicę tej funkcji przy $x \to \infty$ oraz porównać ją z wykresem.
+\subsection{Rozwiązanie}
+Do wizualizacji użyłem programu \textit{Desmos} oraz \textit{Wolfram Alpha}.
+%zalacz obrazek wykresy/desmos.png
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{wykresy/desmos.png}
+    \caption{Wykres funkcji $f(x) = e^x \ln(1 + e^{-x})$ w programie Desmos}
+    \label{fig:desmos}
+\end{figure}
+%zalacz obrazek wykresy/wolfram.png
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{wykresy/wolfram.png}
+    \caption{Wykres funkcji $f(x) = e^x \ln(1 + e^{-x})$ w programie Wolfram Alpha}
+    \label{fig:wolfram}
+\end{figure}
+Obliczenie granicy:
+\begin{align*}
+    \lim_{x \to \infty} e^x \ln(1 + e^{-x}) &= \lim_{x \to \infty} \frac{\ln(1 + e^{-x})}{e^{-x}} \\
+    &= \lim_{x \to \infty} \frac{\frac{d}{dx}(\ln(1 + e^{-x}))}{\frac{d}{dx}(e^{-x})} &\text{(Reguła de l'Hospitala)}\\
+    &= \lim_{x \to \infty} \frac{\frac{-e^{-x}}{1 + e^{-x}}}{-e^{-x}} \\
+    &= \lim_{x \to \infty} \frac{1}{1 + e^{-x}} = 1
+\end{align*}
+\subsection{Wnioski}
+Na obydwu wykresach widać, że w okolicy $x \in [30, 36]$ funkcja zaczyna zachowywać się niestabilnie, a następnie dla większych wartości $x$ przyjmuje wartość 0, co jest sprzeczne z teorią, gdyż granica funkcji przy $x \to \infty$ wynosi 1. Dzieje się tak, ponieważ dla dużych wartości $x$ wyrażenie $e^{x}$ staje się bardzo duże, natomiast $\ln(1 + e^{-x})$ bardzo małe, przez co ich iloczyn, w zastosowanej przez programy arytmetyce, jest obarczony dużym błędem. Dla jeszcze większych wartości $x>36$ wartość $\ln(1 + e^{-x})\approx 0$ zatem cała funkcja przyjmuje wartość 0.
+
+\section{Zadanie 3}
+\subsection{Opis problemu}
+W zadaniu należy porównać dwie metody rozwiązywania układów równań liniowych: metodę eliminacji Gaussa oraz poprzez wzięcie macierzy odwrotnej. Eksperyment należy przeprowadzić dla różnych rozmiarów macierzy Hilberta oraz losowej o rosnącym wskaźniku uwarunkowania.
+\subsection{Rozwiązanie}
+Do rozwiązania zadania użyłem podanych funkcji w \texttt{hilb.jt} oraz \texttt{matcond.jt} do generowania macierzy Hilberta oraz losowej o zadanym wskaźniku uwarunkowania. Następnie dla każdej z macierzy generowałem wektor $b = A \cdot x$, gdzie $x$ to wektor jednostkowy. Następnie rozwiązywałem układ równań $A x = b$ za pomocą obu metod i liczyłem błąd bezwzględny pomiędzy otrzymanym rozwiązaniem a wektorem $x$.
+\subsection{Wyniki}
+Poniżej w tabelach znajdują się wyniki eksperymentów dla macierzy Hilberta oraz losowych.
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Rozmiar & Wskaźnik uwarunkowania &Rząd& Błąd metody Gaussa & Błąd metody odwrotnej \\
+        \hline
+        1 & $1.0$ & 1 & $0.0$ & $0.0$ \\
+        \hline
+        2 & $19.28$ & 2 & $5.66 \cdot 10^{-16}$ & $1.40 \cdot 10^{-15}$ \\
+        \hline
+        3 & $524.06$ & 3 & $8.02 \cdot 10^{-15}$ & $0.0$ \\
+        \hline
+        4 & $1.55 \cdot 10^{4}$ & 4 & $4.14 \cdot 10^{-14}$ & $0.0$ \\
+        \hline
+        5 & $4.77 \cdot 10^{5}$ & 5 & $1.68 \cdot 10^{-12}$ & $3.35 \cdot 10^{-12}$ \\
+        \hline
+        6 & $1.50 \cdot 10^{7}$ & 6 & $2.62 \cdot 10^{-10}$ & $2.01 \cdot 10^{-10}$ \\
+        \hline
+        7 & $4.75 \cdot 10^{8}$ & 7 & $1.26 \cdot 10^{-8}$ & $4.71 \cdot 10^{-9}$ \\
+        \hline
+        8 & $1.53 \cdot 10^{10}$ & 8 & $6.12 \cdot 10^{-8}$ & $3.07 \cdot 10^{-7}$ \\
+        \hline
+        9 & $4.93 \cdot 10^{11}$ & 9 & $3.87 \cdot 10^{-6}$ & $4.54 \cdot 10^{-6}$ \\
+        \hline
+        10 & $1.60 \cdot 10^{13}$ & 10 & $8.67 \cdot 10^{-5}$ & $2.50 \cdot 10^{-4}$ \\
+        \hline
+        11 & $5.22 \cdot 10^{14}$ & 10 & $1.58 \cdot 10^{-4}$ & $7.61 \cdot 10^{-3}$ \\
+        \hline
+        12 & $1.75 \cdot 10^{16}$ & 11 & $1.34 \cdot 10^{-1}$ & $2.59 \cdot 10^{-1}$ \\
+        \hline
+        13 & $3.34 \cdot 10^{18}$ & 11 & $1.10 \cdot 10^{-1}$ & $5.33$ \\
+        \hline
+        14 & $6.20 \cdot 10^{17}$ & 11 & $1.46$ & $8.71$ \\
+        \hline
+        15 & $3.67 \cdot 10^{17}$ & 12 & $4.70$ & $7.34$ \\
+        \hline
+        16 & $7.87 \cdot 10^{17}$ & 12 & $5.42 \cdot 10^{1}$ & $2.98 \cdot 10^{1}$ \\
+        \hline
+        17 & $1.26 \cdot 10^{18}$ & 12 & $1.37 \cdot 10^{1}$ & $1.05 \cdot 10^{1}$ \\
+        \hline
+        18 & $2.24 \cdot 10^{18}$ & 12 & $1.03 \cdot 10^{1}$ & $2.48 \cdot 10^{1}$ \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki eksperymentu dla macierzy Hilberta}
+    \label{tab:hilbert}
+\end{table}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Rozmiar & Wskaźnik uwarunkowania &Rząd& Błąd metody Gaussa & Błąd metody odwrotnej \\
+        \hline
+        5 & $1.0$ & 5 & $2.48 \cdot 10^{-16}$ & $1.11 \cdot 10^{-16}$ \\
+        \hline
+        5 & $10.0$ & 5 & $3.29 \cdot 10^{-16}$ & $3.58 \cdot 10^{-16}$ \\
+        \hline
+        5 & $1.00 \cdot 10^{3}$ & 5 & $5.74 \cdot 10^{-15}$ & $4.56 \cdot 10^{-15}$ \\
+        \hline
+        5 & $1.00 \cdot 10^{7}$ & 5 & $2.51 \cdot 10^{-10}$ & $2.31 \cdot 10^{-10}$ \\
+        \hline
+        5 & $1.00 \cdot 10^{12}$ & 5 & $6.32 \cdot 10^{-6}$ & $2.92 \cdot 10^{-6}$ \\
+        \hline
+        5 & $1.59 \cdot 10^{16}$ & 4 & $5.42 \cdot 10^{-1}$ & $2.76 \cdot 10^{-1}$ \\
+        \hline
+        10 & $1.0$ & 10 & $2.36 \cdot 10^{-16}$ & $1.57 \cdot 10^{-16}$ \\
+        \hline
+        10 & $10.0$ & 10 & $2.87 \cdot 10^{-16}$ & $2.16 \cdot 10^{-16}$ \\
+        \hline
+        10 & $1.00 \cdot 10^{3}$ & 10 & $1.55 \cdot 10^{-15}$ & $2.73 \cdot 10^{-15}$ \\
+        \hline
+        10 & $1.00 \cdot 10^{7}$ & 10 & $5.40 \cdot 10^{-10}$ & $5.70 \cdot 10^{-10}$ \\
+        \hline
+        10 & $1.00 \cdot 10^{12}$ & 10 & $1.32 \cdot 10^{-5}$ & $4.48 \cdot 10^{-6}$ \\
+        \hline
+        10 & $2.43 \cdot 10^{16}$ & 9 & $2.28 \cdot 10^{-1}$ & $2.24 \cdot 10^{-1}$ \\
+        \hline
+        20 & $1.0$ & 20 & $5.43 \cdot 10^{-16}$ & $6.32 \cdot 10^{-16}$ \\
+        \hline
+        20 & $10.0$ & 20 & $5.42 \cdot 10^{-16}$ & $6.07 \cdot 10^{-16}$ \\
+        \hline
+        20 & $1.00 \cdot 10^{3}$ & 20 & $2.15 \cdot 10^{-14}$ & $1.99 \cdot 10^{-14}$ \\
+        \hline
+        20 & $1.00 \cdot 10^{7}$ & 20 & $5.62 \cdot 10^{-10}$ & $5.39 \cdot 10^{-10}$ \\
+        \hline
+        20 & $1.00 \cdot 10^{12}$ & 20 & $5.07 \cdot 10^{-5}$ & $5.19 \cdot 10^{-5}$ \\
+        \hline
+        20 & $3.24 \cdot 10^{16}$ & 19 & $1.72 \cdot 10^{-1}$ & $1.44 \cdot 10^{-1}$ \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki eksperymentu dla macierzy losowych}
+    \label{tab:random}
+\end{table}
+
+\subsection{Wnioski}
+Dla wysokiego wskaźnika uwarunkowania, nie zależnie od rozmiuaru macierzy, obie metody dają duże błędy, jednak metoda eliminacji Gaussa radzi sobie lepiej niż metoda z macierzą odwrotną. Natomiast próbując rozwiązać układ równań dla macierzy Hilberta zwiększając jej rozmiar, błąd rośnie bardzo szybko, co pokazuje, że macierze Hilberta są źle uwarunkowane. W przypadku macierzy losowych błąd również rośnie ze wzrostem wskaźnika uwarunkowania, jednakże nie jest to tak drastyczne jak w przypadku 
+
+\end{document}
