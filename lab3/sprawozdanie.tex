@@ -1,0 +1,44 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage[final]{microtype}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % czyść wszystko
+\lhead{Notatki z matematyki}
+\rhead{\leftmark}
+\cfoot{\thepage}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{siunitx} % jeżeli potrzebne jednostki
+\sisetup{locale = DE} % separator 1,23 (polski), można zmienić na locale=PL gdy dostępne
+\usepackage{bm}       % pogrubione symbole
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{csquotes}
+
+\usepackage{enumitem}
+\setlist{noitemsep,topsep=3pt}
+\usepackage{xcolor}
+
+\title{Obliczenia Naukowe -- Sprawozdanie Laboratoria 3.}
+\author{Jakub Kogut}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Wstęp}
+Na 3. liscie zadań mamy za zadanie napisać oraz przetowstować różne metody rozwiązywania równiań $f(x) = 0$, gdzie $f$ jest zadaną funkcją rzeczywistą jednej zmiennej. 
+\section{Metody iteracyjne}
+\subsection{Metoda bisekcji}
+Metoda bisekcji polega na podziale przedziału $[a,b]$, na którym funkcja $f$ zmienia znak, na pół i wyborze podprzedziału, na którym funkcja również zmienia znak. Proces ten iterujemy aż do uzyskania zadowalającej dokładności.
+
+\end{document}
+

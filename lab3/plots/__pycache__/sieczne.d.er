@@ -1,0 +1,85 @@
+##[pylyzer] failed /home/kogut/uni25Z/obliczenia/lab3/wykresy/sieczne.py 1763908475 2276
+.np = pyimport "numpy"
+.numpy = pyimport "numpy"
+
+.plt = pyimport "pyplot"
+.pyplot = pyimport "pyplot"
+
+.f: |R <: Structural({.__pow__ = (self: Never, ?R) -> ?R}), R: Type|(x: R) -> Float
+.___v_global_339336: global::Tuple([{1.0}, {5.0}])
+.xmin: {1.0}
+.xmax: {5.0}
+
+.___v_global_339337: global::Tuple([{3.5}, {4.0}])
+.x0: {3.5}
+.x1: {4.0}
+
+.n_iters: {2}
+.history: global::List!(global::Tuple([Int, {3.5}, {4.0}, Float, Float, Float, Float]), 0)
+
+.___v_global_339338: Never
+.f0: Float
+.f1: Float
+
+.x2: Float
+.f2: Never
+
+.___v_global_339339: global::Tuple([{4.0}, Float])
+.x0: {4.0}
+.x1: Float
+
+
+
+
+
+
+.it: Int
+.xa: {3.5}
+.xb: {4.0}
+.xc: Float
+.fa: Float
+.fb: Float
+.fc: Float
+
+
+
+.x_plot: Never
+.y_plot: Float
+.___v_global_339341: Never
+.fig: Never
+.ax: Never
+
+
+
+.colors: global::List!({"#F58518", "#4C78A8", "#54A24B"}, 3)
+
+.___v_global_339343: global::Tuple([Int, {3.5}, {4.0}, Float, Float, Float, Float])
+.it: Int
+.xa: {3.5}
+.xb: {4.0}
+.xc: Float
+.fa: Float
+.fb: Float
+.fc: Float
+.c: {"#F58518", "#4C78A8", "#54A24B"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
