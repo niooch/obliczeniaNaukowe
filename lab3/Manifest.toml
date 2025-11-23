@@ -1,10 +1,10 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.12.1"
+julia_version = "1.12.2"
 manifest_format = "2.0"
 project_hash = "aa75655c493caffe4304cb14aac62410f5f6715a"
 
 [[deps.Roots]]
-path = "/home/kogut/uni25Z/obliczenia/lab3/Roots"
+path = "/home/kogut/uni25Z/obliczenia/lab3/Roots/"
 uuid = "0e58a0ef-9a79-4f87-809f-353b366e6bfd"
 version = "0.1.0"

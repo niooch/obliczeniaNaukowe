@@ -29,8 +29,8 @@ function bisekcja(f, a::Float64, b::Float64, delta::Float64, epsilon::Float64)
         else
             a = c
             u = w
-            it += 1
         end
+        it += 1
     end
     r = a + e
     v = f(r)

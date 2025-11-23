@@ -1,4 +1,4 @@
-module Roots
+module MyRoots
 
 export newton, bisekcja, sieczne
 

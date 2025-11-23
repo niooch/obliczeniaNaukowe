@@ -38,7 +38,419 @@
 Na 3. liscie zadań mamy za zadanie napisać oraz przetowstować różne metody rozwiązywania równiań $f(x) = 0$, gdzie $f$ jest zadaną funkcją rzeczywistą jednej zmiennej. 
 \section{Metody iteracyjne}
 \subsection{Metoda bisekcji}
-Metoda bisekcji polega na podziale przedziału $[a,b]$, na którym funkcja $f$ zmienia znak, na pół i wyborze podprzedziału, na którym funkcja również zmienia znak. Proces ten iterujemy aż do uzyskania zadowalającej dokładności.
+Metoda bisekcji polega na podziale przedziału $[a,b]$, na którym funkcja $f$ zmienia znak, na pół i wyborze podprzedziału, na którym funkcja również zmienia znak. Proces ten iterujemy aż do uzyskania zadowalającej dokładności. Z twierdzenia Darboux wynika, że jeżeli $f$ jest funkcją ciągłą na przedziale $[a,b]$ i $f(a)f(b) < 0$, to istnieje co najmniej jedno miejsce zerowe $f$ w przedziale $(a,b)$.
+
+%dodaj wykres bisekcji
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plots/bisection_iterations.png}
+    \caption{Ilustracja metody bisekcji z wykładu. Watości początkowe $a = 1, b = 5$.}
+    \label{fig:bisekcja}
+\end{figure}
+
+Algorytm działania metody wygląda następująco:
+\begin{enumerate}
+    \item wyznacz środek przedziału $c = \frac{a+b}{2}$
+    \item należy zbadać w którym z przedziałów $[a,c]$ lub $[c,b]$ funkcja zmienia znak poprzez sprawdzenie wartości $f(a)f(c)$
+    \item jeżeli $f(a)f(c) < 0$, to należy przyjąć $b \leftarrow c$, w przeciwnym wypadku $a \leftarrow c$
+    \item powtarzamy kroki 1-3 aż do uzyskania zadowalającej dokładności
+\end{enumerate}
+Z wykładu wiemy, że metoda ta jest zbieżna liniowo i działa globalnie.
+
+\subsection{Metoda Newtona}
+Metoda Newtona polega na przybliżaniu miejsca zerowego funkcji $f$ poprzez kolejne styczne do wykresu funkcji. Wybieramy punkt startowy $x_0$ i obliczamy kolejne przybliżenia według wzoru:
+\[x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\]
+Proces ten powtarzamy aż do uzyskania zadowalającej dokładności.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plots/newton_iterations.png}
+    \caption{Ilustracja metody Newtona z wykładu. Wartość początkowa $x_0 = 4.5$.}
+    \label{fig:newton}
+\end{figure}
+Jednym z założeń tej metody jest to, że musi ona być podwójnie różniczkowalna w otoczeniu miejsca zerowego. Zatem, jeżeli badamy funkcję $f$ na przedziale $[a,b]$ musi ona spełniać:
+\[
+    f \in C^2[a,b] 
+\]
+Z wykładu wiemy, że jest ona lokalnie zbieżna kwadratowo.
+
+\subsection{Metoda siecznych}
+Metoda siecznych jest podobna do metody Newtona, jednak zamiast korzystać z pochodnej funkcji, korzysta z przybliżenia pochodnej za pomocą dwóch ostatnich punktów. Wybieramy dwa punkty startowe $x_0$ i $x_1$ i obliczamy kolejne przybliżenia według wzoru:
+\[x_{n+1} = x_n - f(x_n) \cdot \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1)}}\]
+Proces ten powtarzamy aż do uzyskania zadowalającej dokładności.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plots/secant_iterations.png}
+    \caption{Ilustracja metody siecznych z wykładu. Wartości początkowe $x_0 = 1, x_1 = 5$.}
+    \label{fig:sieczne}
+\end{figure}
+Natomiast ta metoda jest również lokalnie zbieżna, ale z wykładnikiem zbieżności $\varphi = \frac{1 + \sqrt{5}}{2}$.
+
+\newpage
+\section{Zadanie 4}
+W zadaniu 4 należało przetestować zachowania zaimplementowanych metod na funkcji:
+\[
+    f(x) = sin(x) - \frac{x^2}{4}
+\]
+Możemy łatwo policzyć jej pochodną, która będzie potrzebna w metodzie Newtona:
+\[
+    f'(x) = cos(x) - \frac{x}{2}
+\]
+Dla wszystkich metod dana jest ta sama dokładność $\epsilon = 10^{-5}, \delta = 10^{-5}$.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plots/zadanie3.png}
+    \caption{Wykres funkcji: \textcolor{red}{$f(x) = sin(x) - \frac{x^2}{4}$}.}
+    \label{fig:zad3}
+\end{figure}
+
+%Metoda Newtona:
+%Pierwiastek: 1.933753779789742
+%Wartosc funkcji w pierwiastku: -2.2423316314856834e-8
+%Liczba iteracji: 4
+%Ostatni blad: 0
+%
+%Metoda siecznych:
+%Pierwiastek: 1.933753644474301
+%Wartosc funkcji w pierwiastku: 1.564525129449379e-7
+%Liczba iteracji: 4
+%Ostatni blad: 0
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Metoda & Przybliżone $r$ & Wartość $f(r)$ & Liczba iteracji & Kod Błędu \\
+        \hline
+        Bisekcja & 1.9337539672851562 & $-2.7027680138402843\cdot 10{-7}$ & 16 & 0 \\
+        \hline
+        Newton & 1.933753779789742 & $-2.2423316314856834\cdot 10^{-8}$ & 4 & 0 \\
+        \hline
+        Sieczne & 1.933753644474301 & $1.564525129449379\cdot 10^{-7}$ & 4 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metod na funkcji $f(x) = sin(x) - \frac{x^2}{4}$.}
+    \label{tab:results}
+\end{table}
+
+Jak widać każda z metod wyszukuje poprawnie miejsca zerowego funkcji z zadaną dokładnością. Najszybciej zbiega metoda Newtona oraz metoda siecznych, które potrzebują jedynie 4 iteracji do uzyskania zadowalającego wyniku. Wynika to z faktu, że obie te metody są lokalnie zbieżne kwadratowo (Newton) oraz z wykładnikiem zbieżności $\varphi = \frac{1 + \sqrt{5}}{2}$ (sieczne). Metoda bisekcji potrzebuje aż 16 iteracji, co jest zgodne z jej liniową zbieżnością. Wszystkie wartości początkowe zostały dobrze dobrane. Ponieważ metody siecznych oraz Newtona są metodami lokalnymi, a ich punkty startowe znajdowały się wystarczająco blisko rzeczywistego miejsca zerowego funkcji.
+\newpage
+\section{Zadanie 5}
+W zadaniu 5 mamy wyznaczyć punkt przecięcia się dwóch funkcji:
+\[
+    f_1(x) = 3x
+\]
+\[
+    f_2(x) = e^x
+\]
+Aby to zrobić, musimy rozwiązać równanie:
+\[
+    f(x) = f_1(x) - f_2(x) = 3x - e^x = 0
+\]
+Zobaczmy również wykres tej funkcji:
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plots/zadanie4.png}
+    \caption{Wykres funkcji: \textcolor{green}{$f(x) = 3x - e^x$}, \textcolor{red}{$f_1(x) = 3x$}, \textcolor{blue}{$f_2(x) = e^x$}.}
+    \label{fig:zad4}
+\end{figure}
+Jak widać na wykresie, funkcja $f$ ma dwa miejsca zerowe: jedno w przedziale $[0,1]$ oraz drugie w przedziale $[1,2]$. Zatem aby znaleźć oba miejsca zerowe, zastosujemy metodę bisekcji na obu przedziałach.
+%Miejsce przeciecia funkcji f1 i f2 to: 0.61907958984375
+%Wartosc funkcji f1 w tym punkcie to: 1.85723876953125
+%Wartosc funkcji f2 w tym punkcie to: 1.8572178527553258
+%Wartosc sygnalu bledu to: 0
+%Liczba iteracji potrzebnych do osiagniecia tego bledu to: 14
+%Miejsce przeciecia funkcji f1 i f2 to: 1.51214599609375
+%Wartosc funkcji f1 w tym punkcie to: 4.53643798828125
+%Wartosc funkcji f2 w tym punkcie to: 4.536455571851486
+%Wartosc sygnalu bledu to: 0
+%Liczba iteracji potrzebnych do osiagniecia tego bledu to: 14
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Przedział & Przybliżone $r$ & Wartość $f_1(r)$ & Wartość $f_2(r)$ & Liczba iteracji \\
+        \hline
+        $[0,1]$ & 0.61907958984375 & 1.85723876953125 & 1.8572178527553258 & 14 \\
+        \hline
+        $[1,2]$ & 1.51214599609375 & 4.53643798828125 & 4.536455571851486 & 14 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metody bisekcji na funkcji $f(x) = 3x - e^x$ na dwóch przedziałach.}
+    \label{tab:zad5}
+\end{table}
+Aby nie sprawdzać ilości miejsc zerowych funkcji na danym przedziale, moglibyśmy zmodyfikować metodę bisekcji tak, aby działała rekurencyjnie na podprzedziałach, aż do znalezienia wszystkich miejsc zerowych z zadaną dokładnością. Wtedy można by było uniknąć pułkapki z wyborem złych przedziałów startowych.
+
+\section{Zadanie 6}
+W zadaniu należy znaleść miejsca zerowe funkcji:
+\[
+    f_1(x) = e^{1-x} - 1
+\]
+oraz
+\[
+    f_2(x) = x e^{-x}
+\]
+przy użyciu wsytkich dotyczasowych metod iteracyjnych. Zobaczmy wykresy tych funkcji:
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{plots/zadanie5.png}
+    \caption{Wykresy funkcji: \textcolor{blue}{$f_1(x) = e^{1-x} - 1$}, \textcolor{red}{$f_2(x) = x e^{-x}$}.}
+    \label{fig:zad5}
+\end{figure}\\
+Również dokładność dla wszystkich metod wynosi $\epsilon = 10^{-5}, \delta = 10^{-5}$.
+\subsection{Metoda bisekcji}
+Dla funkcji $f_1$ uruchomiłem metodę na kilku przedziałach aby zbadać jej zachowanie:
+%Miejsce zerowe:-100,200, 1.0000020265579224, Wartosc funkcji w miejscu zerowym: -2.026555868894775e-6, Iteracje: 25, Blad: 0
+%Miejsce zerowe:0, 1.5, 1.0000019073486328, Wartosc funkcji w miejscu zerowym: -1.9073468138230965e-6, Iteracje: 18, Blad: 0
+%Miejsce zerowe:0.9999, 1.0001, 1.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 1, Blad: 0
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Przedział & Przybliżone $r$ & Wartość $f_1(r)$ & Liczba iteracji & Kod Błędu \\
+        \hline
+        $[-100,200]$ & 1.0000020265579224 & $-2.026555868894775\cdot 10^{-6}$ & 25 & 0 \\
+        \hline
+        $[0,1.5]$ & 1.0000019073486328 & $-1.9073468138230965\cdot 10^{-6}$ & 18 & 0 \\
+        \hline
+        $[0.9999,1.0001]$ & 1.0 & 0.0 & 1 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metody bisekcji na funkcji $f_1(x) = e^{1-x} - 1$.}
+    \label{tab:zad6_f1_bisect}
+\end{table}
+
+Dla funkcji $f_2$ analogicznie:
+%a = -100.0, b = 100.0
+%Miejsce zerowe: 100.0, Wartosc funkcji w miejscu zerowym: 3.7200759760208363e-42, Iteracje: 0, Blad: 0
+%a = -1.0, b = 1.0
+%Miejsce zerowe: 0.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 1, Blad: 0
+%a = -0.005, b = 0.005
+%Miejsce zerowe: 0.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 1, Blad: 0
+%a = -0.95, b = 1.5
+%Miejsce zerowe: 3.0517578126132883e-6, Wartosc funkcji w miejscu zerowym: 3.0517484994017526e-6, Iteracje: 14, Blad: 0
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Przedział & Przybliżone $r$ & Wartość $f_2(r)$ & Liczba iteracji & Kod Błędu \\
+        \hline
+        $[-100,100]$ & 100.0 & $3.7200759760208363\cdot 10^{-42}$ & 0 & 0 \\
+        \hline
+        $[-0.95, 1.5]$ & $3.0517578126132883\cdot 10^{-6}$ & $3.0517484994017526\cdot 10^{-6}$ & 14 & 0 \\
+        \hline
+        $[-1,1]$ & 0.0 & 0.0 & 1 & 0 \\
+        \hline
+        $[-0.005,0.005]$ & 0.0 & 0.0 & 1 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metody bisekcji na funkcji $f_2(x) = x e^{-x}$.}
+    \label{tab:zad6_f2_bisect}
+\end{table}
+\newpage
+Przy nie odpowiednim doborze przedziału startowego metoda bisekcji może nie znaleźć miejsca zerowego (pierwszy wiersz tabeli \ref{tab:zad6_f2_bisect}). Dzieje się tak ponieważ funkcja $f_2$ bardzo szybko zbliża się do 0, które jest brane za rozwiązanie.\\
+Jeżeli szukany pierwiastek jest środkiem któregoś z przedziałów startowych, metoda znajdzie go od razu (drugi i trzeci wiersz tabeli \ref{tab:zad6_f1_bisect} oraz \ref{tab:zad6_f2_bisect}).
+
+\subsection{Metoda Newtona}
+Dla funkcji $f_1$:
+%Metoda Newtona dla f1 z x0 = 10.0:
+%Miejsce zerowe: NaN, Wartosc funkcji w miejscu zerowym: NaN, Iteracje: 1000, Blad: 1
+%Metoda Newtona dla f1 z x0 = 5.0:
+%Miejsce zerowe: 0.9999996427095682, Wartosc funkcji w miejscu zerowym: 3.572904956339329e-7, Iteracje: 54, Blad: 0
+
+%Metoda Newtona dla f1 z x0 = 2.0:
+%Miejsce zerowe: 0.9999999810061002, Wartosc funkcji w miejscu zerowym: 1.8993900008368314e-8, Iteracje: 5, Blad: 0
+%Metoda Newtona dla f1 z x0 = 1.0:
+%Miejsce zerowe: 1.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 0, Blad: 0
+%Metoda Newtona dla f1 z x0 = 0.5:
+%Miejsce zerowe: 0.9999999998878352, Wartosc funkcji w miejscu zerowym: 1.1216494399945987e-10, Iteracje: 4, Blad: 0
+%Metoda Newtona dla f1 z x0 = 0.0:
+%Miejsce zerowe: 0.9999984358892101, Wartosc funkcji w miejscu zerowym: 1.5641120130194253e-6, Iteracje: 4, Blad: 0
+%Metoda Newtona dla f1 z x0 = -1.0:
+%Miejsce zerowe: 0.9999999999700886, Wartosc funkcji w miejscu zerowym: 2.991140668484604e-11, Iteracje: 6, Blad: 0
+%Metoda Newtona dla f1 z x0 = -100.0:
+%Miejsce zerowe: 0.9999999998780821, Wartosc funkcji w miejscu zerowym: 1.2191803122618694e-10, Iteracje: 105, Blad: 0
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Punkt startowy & Przybliżone $r$ & Wartość $f_1(r)$ & Liczba iteracji & Kod Błędu \\
+        \hline
+        10.0 & NaN & NaN & 1000 & 1 \\
+        \hline
+        5.0 & 0.9999996427095682 & $3.572904956339329\cdot 10^{-7}$ & 54 & 0 \\
+        \hline
+        2.0 & 0.9999999810061002 & $1.8993900008368314\cdot 10^{-8}$ & 5 & 0 \\
+        \hline
+        1.0 & 1.0 & 0.0 & 0 & 0 \\
+        \hline
+        0.5 & 0.9999999998878352 & $1.1216494399945987\cdot 10^{-10}$ & 4 & 0 \\
+        \hline
+        0.0 & 0.9999984358892101 & $1.5641120130194253\cdot 10^{-6}$ & 4 & 0 \\
+        \hline
+        -1.0 & 0.9999999999700886 & $2.991140668484604\cdot 10^{-11}$ & 6 & 0 \\
+        \hline
+        -100.0 & 0.9999999998780821 & $1.2191803122618694\cdot 10^{-10}$ & 105 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metody Newtona na funkcji $f_1(x) = e^{1-x} - 1$.}
+    \label{tab:zad6_f1_newton}
+\end{table}
+Metoda Newtona dla funkcji $f_1$ działa dobrze dla punktów startowych blisko miejsca zerowego. Jednak dla punktu startowego daleko od miejsca zerowego (pierwszy wiersz tabeli \ref{tab:zad6_f1_newton}) metoda nie zbiega.
+\begin{itemize}
+    \item Jeżeli punkt startowy $x_0 \in (1, \infty)$, dla pewnych wartości takich jak $x_0=2.0$, czy $x_0=5.0$, metoda zbiega do miejsca zerowego. Jednak dla większych wartości, jak $x_0=10.0$, metoda nie zbiega i kończy się po osiągnięciu maksymalnej liczby iteracji.
+\end{itemize}
+
+%Metoda Newtona dla f2 z x0 = 10000.0:
+%Miejsce zerowe: 10000.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 0, Blad: 0
+%Metoda Newtona dla f2 z x0 = 10.0:
+%Miejsce zerowe: 15.455259647688075, Wartosc funkcji w miejscu zerowym: 2.9987642464534236e-6, Iteracje: 5, Blad: 0
+%Metoda Newtona dla f2 z x0 = 5.0:
+%Miejsce zerowe: 15.19428398343915, Wartosc funkcji w miejscu zerowym: 3.827247505782987e-6, Iteracje: 9, Blad: 0
+%Metoda Newtona dla f2 z x0 = 2.0:
+%Miejsce zerowe: 15.473297079378938, Wartosc funkcji w miejscu zerowym: 2.9485963624070995e-6, Iteracje: 11, Blad: 0
+%Metoda Newtona dla f2 z x0 = 1.0:
+%Miejsce zerowe: NaN, Wartosc funkcji w miejscu zerowym: NaN, Iteracje: 1000, Blad: 1
+%Metoda Newtona dla f2 z x0 = 0.5:
+%Miejsce zerowe: -3.0642493416461764e-7, Wartosc funkcji w miejscu zerowym: -3.0642502806087233e-7, Iteracje: 5, Blad: 0
+%Metoda Newtona dla f2 z x0 = 0.0:
+%Miejsce zerowe: 0.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 0, Blad: 0
+%Metoda Newtona dla f2 z x0 = -0.5:
+%Miejsce zerowe: -3.0642493416461764e-7, Wartosc funkcji w miejscu zerowym: -3.0642502806087233e-7, Iteracje: 4, Blad: 0
+%Metoda Newtona dla f2 z x0 = -1.0:
+%Miejsce zerowe: -3.0642493416461764e-7, Wartosc funkcji w miejscu zerowym: -3.0642502806087233e-7, Iteracje: 5, Blad: 0
+%Metoda Newtona dla f2 z x0 = -100.0:
+%Miejsce zerowe: -4.356806237879908e-6, Wartosc funkcji w miejscu zerowym: -4.356825219681853e-6, Iteracje: 108, Blad: 0
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Punkt startowy & Przybliżone $r$ & Wartość $f_2(r)$ & Liczba iteracji & Kod Błędu \\
+        \hline
+        10000.0 & 10000.0 & 0.0 & 0 & 0 \\
+        \hline
+        10.0 & 15.455259647688075 & $2.9987642464534236\cdot 10^{-6}$ & 5 & 0 \\
+        \hline
+        5.0 & 15.19428398343915 & $3.827247505782987\cdot 10^{-6}$ & 9 & 0 \\
+        \hline
+        2.0 & 15.473297079378938 & $2.9485963624070995\cdot 10^{-6}$ & 11 & 0 \\
+        \hline
+        1.0 & NaN & NaN & 1 & 2 \\
+        \hline
+        0.5 & $-3.0642493416461764\cdot 10^{-7}$ & $-3.0642502806087233\cdot 10^{-7}$ & 5 & 0 \\
+        \hline
+        0.0 & 0.0 & 0.0 & 0 & 0 \\
+        \hline
+        -0.5 & $-3.0642493416461764\cdot 10^{-7}$ & $-3.0642502806087233\cdot 10^{-7}$ & 4 & 0 \\
+        \hline
+        -1.0 & $-3.0642493416461764\cdot 10^{-7}$ & $-3.0642502806087233\cdot 10^{-7}$ & 5 & 0 \\
+        \hline
+        -100.0 & $-4.356806237879908\cdot 10^{-6}$ & $-4.356825219681853\cdot 10^{-6}$ & 108 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metody Newtona na funkcji $f_2(x) = x e^{-x}$.}
+    \label{tab:zad6_f2_newton}
+\end{table}
+Z wyników widać, że metoda Newtona może mieć problemy z zbieżnością jeżeli punkt startowy nie jest dobrze dobrany (lokalność). W przypadku funkcji $f_1$ im dalej od miejsca zerowego znajduje się punkt startowy, tym więcej iteracji potrzeba do znalezienia rozwiązania. Natomiast w przypadku funkcji $f_2$ punkty startowe większe od około 1 prowadzą do braku zbieżności (w przypadku $x_0 > 1$ wartości funkcji są efektywnie równe 0). Zatem:
+\begin{itemize}
+    \item jeżeli punkt startowy $x_0 \in (1, \infty)$, metoda nie zbiega do miejsca zerowego, kończy się po osiągnięciu wystarczająco małej wartości funkcji,
+    \item jeżeli punkt startowy $x_0 = 1.0$, otrzymujemy błąd 2 (pochodna równa 0), faktycznie
+        \[
+            f_2'(1) = e^{-1} + (-1) e^{-1} = 0
+        \]
+\end{itemize}
+
+\subsection{Metoda siecznych}
+
+%x0 = 0.0, x1 = 2.0
+%Miejsce zerowe: 1.0000017597132702, Wartosc funkcji w miejscu zerowym: -1.7597117218937086e-6, Iteracje: 6, Blad: 0
+%x0 = -1.0, x1 = 1.0
+%Miejsce zerowe: 1.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 1, Blad: 0
+%x0 = 1.5, x1 = 2.0
+%Miejsce zerowe: 1.0000034269838276, Wartosc funkcji w miejscu zerowym: -3.4269779555229363e-6, Iteracje: 5, Blad: 0
+%x0 = 2.5, x1 = 3.0
+%Miejsce zerowe: 1.0000000980263084, Wartosc funkcji w miejscu zerowym: -9.80263036298723e-8, Iteracje: 11, Blad: 0
+%x0 = -2.5, x1 = -3.0
+%Miejsce zerowe: 0.9999998925933478, Wartosc funkcji w miejscu zerowym: 1.0740665801201033e-7, Iteracje: 10, Blad: 0
+%x0 = 200.5, x1 = -300.0
+%Miejsce zerowe: 200.5, Wartosc funkcji w miejscu zerowym: -1.0, Iteracje: 1, Blad: 0
+%x0 = 200.5, x1 = 300.0
+%Miejsce zerowe: NaN, Wartosc funkcji w miejscu zerowym: NaN, Iteracje: 1000, Blad: 1
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Punkty startowe & Przybliżone $r$ & Wartość $f_1(r)$ & Liczba iteracji & Kod Błędu \\
+        \hline
+        (0.0, 2.0) & 1.0000017597132702 & $-1.7597117218937086\cdot 10^{-6}$ & 6 & 0 \\
+        \hline
+        (-1.0, 1.0) & 1.0 & 0.0 & 1 & 0 \\
+        \hline
+        (1.5, 2.0) & 1.0000034269838276 & $-3.4269779555229363\cdot 10^{-6}$ & 5 & 0 \\
+        \hline
+        (2.5, 3.0) & 1.0000000980263084 & $-9.80263036298723\cdot 10^{-8}$ & 11 & 0 \\
+        \hline
+        (-2.5, -3.0) & 0.9999998925933478 & $1.0740665801201033\cdot 10^{-7}$ & 10 & 0 \\
+        \hline
+        (200.5, -300.0) & 200.5 & -1.0 & 1 & 0 \\
+        \hline
+        (200.5, 300.0) & NaN & NaN & 1000 & 1 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metody siecznych na funkcji $f_1(x) = e^{1-x} - 1$.}
+    \label{tab:zad6_f1_secant}
+\end{table}
+Dla funkcji $f_1$ metoda siecznych działa dobrze dla różnych punktów startowych, jednak dla bardzo dużych wartości (ostatni wiersz tabeli \ref{tab:zad6_f1_secant}) metoda nie zbiega.
+
+
+
+%x0 = 0.0, x1 = 2.0
+%Miejsce zerowe: 0.0, Wartosc funkcji w miejscu zerowym: 0.0, Iteracje: 1, Blad: 0
+%x0 = -1.0, x1 = 1.0
+%Miejsce zerowe: 1.744165849924562e-8, Wartosc funkcji w miejscu zerowym: 1.7441658195034172e-8, Iteracje: 18, Blad: 0
+%x0 = 1.5, x1 = 2.0
+%Miejsce zerowe: 15.105971719963007, Wartosc funkcji w miejscu zerowym: 4.156315487897544e-6, Iteracje: 15, Blad: 0
+%x0 = 2.5, x1 = 3.0
+%Miejsce zerowe: 15.35695852170886, Wartosc funkcji w miejscu zerowym: 3.2874780854479134e-6, Iteracje: 15, Blad: 0
+%x0 = -2.5, x1 = -3.0
+%Miejsce zerowe: -2.839329775034345e-9, Wartosc funkcji w miejscu zerowym: -2.839329783096139e-9, Iteracje: 11, Blad: 0
+%x0 = -200.5, x1 = -300.0
+%Miejsce zerowe: -200.5, Wartosc funkcji w miejscu zerowym: -2.3886801389325308e89, Iteracje: 1, Blad: 0
+%x0 = 200.5, x1 = 300.0
+%Miejsce zerowe: 300.0, Wartosc funkcji w miejscu zerowym: 1.544460066723604e-128, Iteracje: 1, Blad: 0
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Punkty startowe & Przybliżone $r$ & Wartość $f_2(r)$ & Liczba iteracji & Kod Błędu \\
+        \hline
+        (0.0, 2.0) & 0.0 & 0.0 & 1 & 0 \\
+        \hline
+        (-1.0, 1.0) & $1.744165849924562\cdot 10^{-8}$ & $1.7441658195034172\cdot 10^{-8}$ & 18 & 0 \\
+        \hline
+        (1.5, 2.0) & 15.105971719963007 & $4.156315487897544\cdot 10^{-6}$ & 15 & 0 \\
+        \hline
+        (2.5, 3.0) & 15.35695852170886 & $3.2874780854479134\cdot 10^{-6}$ & 15 & 0 \\
+        \hline
+        (-2.5, -3.0) & $-2.839329775034345\cdot 10^{-9}$ & $-2.839329783096139\cdot 10^{-9}$ & 11 & 0 \\
+        \hline
+        (-200.5, -300.0) & -200.5 & $-2.3886801389325308\cdot 10^{89}$ & 1 & 0 \\
+        \hline
+        (200.5, 300.0) & 300.0 & $1.544460066723604\cdot 10^{-128}$ & 1 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Wyniki działania metody siecznych na funkcji $f_2(x) = x e^{-x}$.}
+    \label{tab:zad6_f2_secant}
+\end{table}
+Dla funkcji $f_2$ metoda siecznych również działa dobrze dla różnych punktów startowych, nawet dla bardzo dużych wartości.
+
+
+
+
+
+
 
 \end{document}
 

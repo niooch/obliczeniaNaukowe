@@ -10,9 +10,13 @@ function newton(f, pf, x0::Float64, delta::Float64, epsilon::Float64, maxit::Int
     if abs(v) < epsilon
         return (x0, v, 0, 0)
     end
+    x1 = NaN
     for k in 1:maxit
         x1 = x0 - v / pf(x0)
         v = f(x1)
+        if( abs(pf(x0)) < epsilon)
+            return (x1, v, k, 2)
+        end
         if abs(x1-x0) < delta || abs(v) < epsilon
             return (x1, v, k, 0)
         end

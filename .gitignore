@@ -7,3 +7,10 @@
 *.toc
 math/
 wykresy/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dylib
+*.dll
