@@ -39,7 +39,7 @@ function naturalna(x::Vector{Float64}, fx::Vector{Float64})
 end
 
 #funkcja rysujaca wykres wielomianu interpolacyjnego w postaci naturalnej oraz interpolowanej funkcji
-function rysujNnfx(f, a::Float64, b::Float64, n::Int, wezly::Symbol = :rownoodlegle)
+function rysujNnfx(f, a::Float64, b::Float64, n::Int; wezly::Symbol = :rownoodlegle)
     x::Vector{Float64} = zeros(n+1)
     fWartosci::Vector{Float64} = zeros(n+1)
 
