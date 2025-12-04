@@ -30,7 +30,7 @@
 
 \title{Obliczenia Naukowe -- Sprawozdanie Laboratoria 2.}
 \author{Jakub Kogut}
-\date{\today}
+\date{10 listopada 2025}
 
 \begin{document}
 \maketitle
@@ -447,7 +447,7 @@ Do rozwiązania zadania napisałem prostą pętlę iterującą 40 razy po równa
     \label{tab:rekur}
 \end{table}
 \subsection{Wnioski}
-Widać, że taki rekurencyjny proces jest bardzo wrażliwy na zaburzenia, ponieważ nawet niewielka zmiana wartości w $p_{10}$ powoduje ogromne różnice w dalszych iteracjach. 
+Widać, że taki rekurencyjny proces jest bardzo wrażliwy na zaburzenia, ponieważ nawet niewielka zmiana wartości w $p_{10}$ powoduje ogromne różnice w dalszych iteracjach. Przez kilka pierwszych iteracji (około 13) wyniki dla obu arytmetyk są podobne, jednak z czasem różnice stają się coraz większe. Aby poprawnie przprowadzić podniesienie do kwadratu należy przechowywać dwa razy więcej cyfr znaczących niż wynosi ilość cyfr liczby podnoszonej. Generalnie, cała ta procedura jest bardzo niestabilna numerycznie.
 
 \section{Zadanie 6}
 \subsection{Opis problemu}
@@ -573,48 +573,50 @@ $x_n$ ($c=-1,\,x_0=0.25$) \\
 \subsection{Wnioski}
 Równanie rekurencyjne można zinterpretować graficznie:
 %wstaw wykresy w wykresy/wykresN.png gdzie N od 1 do 7
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{wykresy/wykres1.png}
     \caption{Wykres dla $c=-2$, $x_0=1$}
     \label{fig:wyk1}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{wykresy/wykres2.png}
     \caption{Wykres dla $c=2$, $x_0=2$}
     \label{fig:wyk2}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{wykresy/wykres3.png}
     \caption{Wykres dla $c=-2$, $x_0\approx2$}
     \label{fig:wyk3}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{wykresy/wykres4.png}
     \caption{Wykres dla $c=-1$, $x_0=1$}
     \label{fig:wyk4}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{wykresy/wykres5.png}
     \caption{Wykres dla $c=-1$, $x_0=-1$}
     \label{fig:wyk5}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{wykresy/wykres6.png}
     \caption{Wykres dla $c=-1$, $x_0=0.75$}
     \label{fig:wyk6}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[!h]
     \centering
     \includegraphics[width=0.8\textwidth]{wykresy/wykres7.png}
     \caption{Wykres dla $c=-1$, $x_0=0.25$}
     \label{fig:wyk7}
 \end{figure}
 
+Widać, że dla różnych wartości parametru $c$ oraz różnych wartości początkowych $x_0$ zachowanie się równania rekurencyjnego jest zupełnie inne. Dla $c=-2$ i $x_0=1$ ciąg zbiega do stałej wartości -1. Dla $c=2$ i $x_0=2$ ciąg rośnie bardzo szybko i osiąga wartość nieskończoności już po 10 iteracjach. Dla $c=-2$ i $x_0$ bliskiego 2, ciąg pozostaje bliski wartości 2 przez wiele iteracji, ale ostatecznie zaczyna oscylować i oddalać się od tej wartości.\\
+W niektórych przypadkach, jak dla $c=-1$ i $x_0=1$ lub $x_0=-1$, ciąg oscyluje między dwoma wartościami (-1 i 0). Dla $c=-1$ i $x_0=0.75$ lub $x_0=0.25$, po pewnej ilości iteracji ciąg również wpada w cykl oscylacji między -1 a 0.\\
 
 \end{document}

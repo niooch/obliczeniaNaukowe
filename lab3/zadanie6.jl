@@ -50,7 +50,7 @@ x0, x1 = 200.5, 300.0
 println("Metoda siecznych dla f1:")
 println("x0 = $x0, x1 = $x1")
 println("Miejsce zerowe: $r, Wartosc funkcji w miejscu zerowym: $v, Iteracje: $it, Blad: $err")
-x0, x1 = 200.5, 300.0
+x0, x1 = -200.5, -300.0
 (r,v,it,err) = sieczne(f2, x0, x1, delta, eps, 1000)
 println("Metoda siecznych dla f2:")
 println("x0 = $x0, x1 = $x1")
