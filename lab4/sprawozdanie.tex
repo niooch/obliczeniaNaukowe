@@ -1,0 +1,110 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage[final]{microtype}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % czyść wszystko
+\lhead{Sprawozdanie laboratoria 4.}
+\rhead{\leftmark}
+\cfoot{\thepage}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{siunitx} % jeżeli potrzebne jednostki
+\sisetup{locale = PL} % separator 1,23 (polski), można zmienić na locale=PL gdy dostępne
+\usepackage{bm}       % pogrubione symbole
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{csquotes}
+
+\usepackage{enumitem}
+\setlist{noitemsep,topsep=3pt}
+\usepackage{xcolor}
+
+\title{Obliczenia Naukowe -- Sprawozdanie Laboratoria 4.}
+\author{Jakub Kogut}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Wstęp}
+Na liście pojawia się problem interpolacji funkcji; polega ona na znalezieniu funkcji wielomianowej, która przechodzi przez zadane punkty i w ``dobry sposób'' przybliża funkcję oryginalną.\\
+Dokładniej dla zadanych $(x_i, f(x_i))$ \textit{węzłów interpolacji}, gdzie $i = 0, 1, \ldots, n$ chcemy znaleźć wielomian $p_n(x)$ stopnia co najwyżej $n$, taki że:
+\begin{equation}
+    p_n(x_i) = f(x_i), \quad i = 0, 1, \ldots, n.
+\end{equation}
+Również celem jest zapisanie go w postacji Newtona:
+\begin{equation}
+    p_n(x) = \sum_{i=0}^{n} f[x_0, x_1, \ldots, x_i] \prod_{j=0}^{i-1} (x - x_j),
+\end{equation}
+gdzie $f[x_0, x_1, \ldots, x_i]$ są \textit{ilorazami różnicowymi} funkcji $f$ w punktach $x_0, x_1, \ldots, x_i$.
+
+\subsection{Motywacja}
+W tej sekcji wyjaśnie dlaczego stosujemy postać Newtona do zapisu wielomianu interpolacyjnego.
+\subsubsection{Dlaczego nie postać naturalna?}
+Postać naturalna wielomianu to:
+\begin{equation}
+    p_n(x) = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n.
+\end{equation}
+Chociaż jest to najprostsza postać, to ma kilka wad:
+\begin{itemize}
+    \item Trudność w obliczaniu współczynników $a_i$ z danych punktów (rozwiązanie równania z macierzą Vandermonde'a, która jest źle uwarunkowana).
+    \item Niestabilność numeryczna dla dużych $n$
+\end{itemize}
+\subsubsection{Dlaczego postać Newtona?}
+Postać Newtona jest zbudowana na innej bazie:
+\begin{equation}\begin{split}
+    B &= \left\{ \prod_{j=0}^{k-1} (x - x_j) : k = 0, 1, \ldots, n \right\} \\
+      &= \left\{1, (x - x_0), (x - x_0)(x - x_1), \ldots, (x - x_0)(x - x_1) \cdots (x - x_{n-1})\right\}.
+\end{split}\end{equation}
+Wtedy $p_n(x)$ można zapisać jako:
+\begin{equation}
+    p_n(x) = \sum_{i=0}^{n} c_i \prod_{j=0}^{i-1} (x - x_j),
+\end{equation}
+gdzie współczynniki $c_i$ są równe ilorazom różnicowym:
+\begin{equation}
+    c_i = f[x_0, x_1, \ldots, x_i].
+\end{equation}
+Postać Newtona ma kilka zalet:
+\begin{itemize}
+    \item Łatwość obliczania współczynników za pomocą ilorazu różnicowego (zadanie 1.)
+    \item Łatwe obliczanie wartości wielomianu w danym punkcie za pomocą schematu Hornera (zadanie 2.)
+    \item Stabilność numeryczna (mniejsze błędy przy dużych $n$)
+\end{itemize}
+\section{Implementacja}
+Implementacja algorytmów znajduje się w pliku \texttt{interpolacja.jl}. Poniżej znajduje się opis zadań.
+\section{Zadanie 1.}
+W zadaniu 1. należy zaimplementować funkcję obliczającą ilorazy różnicowe dla zadanych węzłów interpolacji i wartości funkcji w tych punktach.\\
+Poniżej znajduje się pseudokod algorytmu:
+\begin{algorithm}
+\caption{ilorazyRoznicowe}
+\begin{algorithmic}[1]
+\Function{ilorazyRoznicowe}{$x, f$}
+    \State $n \gets \text{length}(x)$
+    \State $F \gets \text{array of size } n$
+    \For{$i \gets 0$ to $n-1$}
+        \State $F[i] \gets f[i]$
+    \EndFor
+    \For{$j \gets 1$ to $n-1$}
+        \For{$i \gets n-1$ downto $j$}
+            \State $F[i] \gets \dfrac{F[i] - F[i-1]}{x[i] - x[i-j]}$
+        \EndFor
+    \EndFor
+    \State \Return $F$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\end{document}
+
