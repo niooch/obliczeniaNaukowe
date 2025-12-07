@@ -7,6 +7,7 @@
 \usepackage[final]{microtype}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{placeins}
 
 
 \usepackage[a4paper,margin=2.5cm]{geometry}
@@ -259,10 +260,61 @@ Na powyższych wykresach widać, że dla interpolacja za pomocą węzłów równ
     \centering
     \includegraphics[width=0.8\textwidth]{wielomian_czebyszew_15.png}
 \end{figure}
-\pagebreak
+\FloatBarrier
 %wraz z wzrostem n dla rowno odleglych rosna odchylenia na krańcach, dla czebyszewa, widac zmniejszenie bledow. opisz w kontekcjie efektu Rungego
 Podobnie jak w przypadku funkcji $f(x) = |x|$, interpolacja funkcji $f(x) = \frac{1}{1 + x^2}$ prowadzi do znacznych błędów przy użyciu węzłów równoodległych, szczególnie przy krańcach przedziału. Wraz ze wzrostem liczby węzłów interpolacji, błąd ten się zwiększa, co jest przykładem efektu Rungego. Natomiast użycie węzłów Czebyszewa znacząco redukuje te błędy, prowadząc do lepszego dopasowania do funkcji oryginalnej, zwłaszcza przy większej liczbie węzłów.
-%opisz efekt Rungego
+% Funkcja Rungego:
+\[
+f(x) = \frac{1}{1 + x^2}.
+\]
+
+% Węzły równoodległe na przedziale [-1,1]:
+\[
+x_k = -1 + \frac{2k}{n}, \quad k = 0,1,\dots,n.
+\]
+
+% Wielomian interpolacyjny:
+\[
+p_n(x) = \sum_{k=0}^{n} f(x_k)\,\ell_k(x),
+\]
+gdzie \(\ell_k(x)\) to wielomiany Lagrange'a:
+\[
+\ell_k(x) = \prod_{\substack{j=0 \\ j \neq k}}^{n}
+\frac{x - x_j}{x_k - x_j}.
+\]
+
+% Klasyczny wzór na błąd interpolacji:
+\[
+f(x) - p_n(x) = \frac{f^{(n+1)}(\xi_x)}{(n+1)!}
+\prod_{k=0}^{n} (x - x_k),
+\quad \xi_x \in (-1,1).
+\]
+
+% Istota zjawiska Rungego (brak zbieżności w normie maksymalnej):
+\[
+\lim_{n \to \infty} \max_{x \in [-1,1]} |f(x) - p_n(x)| \neq 0,
+\]
+a wręcz
+\[
+\limsup_{n \to \infty} \max_{x \in [-1,1]} |f(x) - p_n(x)| > 0.
+\]
+
+% Stała Lebesgue'a dla węzłów równoodległych (rosnąca bardzo szybko z n):
+\[
+\Lambda_n = \max_{x \in [-1,1]} 
+\sum_{k=0}^{n} |\ell_k(x)|,
+\quad \Lambda_n \xrightarrow[n\to\infty]{} \infty,
+\]
+co jest jedną z przyczyn niestabilności interpolacji
+w węzłach równoodległych (efekt Rungego).
+
+% Dla porównania – węzły Czebyszewa na [-1,1]:
+\[
+x_k = \cos\left(\frac{2k+1}{2n+2}\pi\right), \quad k=0,1,\dots,n,
+\]
+dla których błąd interpolacji dla $f(x) = \frac{1}{1+x^2}$
+już \textbf{zbiega} do zera w sensie maksymalnym.
+
 \section{Wnioski}
 W przeprowadzonych eksperymentach zaobserwowano, że interpolacja wielomianowa jest skuteczną metodą przybliżania funkcji, jednak jej efektywność zależy od wyboru węzłów interpolacji. Węzły równoodległe mogą prowadzić do znacznych błędów, zwłaszcza przy większej liczbie węzłów, co jest ilustrowane przez efekt Rungego. Z kolei węzły Czebyszewa okazały się bardziej stabilne i skuteczne, redukując błędy interpolacji, szczególnie przy funkcjach z ostrymi zmianami.
 
