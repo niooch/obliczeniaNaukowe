@@ -82,9 +82,12 @@ Postać Newtona ma kilka zalet:
     \item Stabilność numeryczna (mniejsze błędy przy dużych $n$)
 \end{itemize}
 \section{Implementacja}
-Implementacja algorytmów znajduje się w pliku \texttt{interpolacja.jl}. Poniżej znajduje się opis zadań.
-\section{Zadanie 1.}
-W zadaniu 1. należy zaimplementować funkcję obliczającą ilorazy różnicowe dla zadanych węzłów interpolacji i wartości funkcji w tych punktach.\\
+Implementacja algorytmów znajduje się w pliku \texttt{interpolacja.jl}, natomiast implentacja testów w \texttt{zadanie56.jl}. Poniżej znajduje się opis zadań.
+\subsection{Zadanie 1.}
+W zadaniu 1. należy zaimplementować funkcję obliczającą ilorazy różnicowe dla zadanych węzłów interpolacji i wartości funkcji w tych punktach. Kozystając ze wzoru:
+\begin{equation}
+    f[x_0, x_1, \dots, x_k] = \frac{f[x_1, \dots, x_k] - f[x_0, \dots, x_{k-1}]}{x_k - x_0}
+\end{equation}
 Poniżej znajduje się pseudokod algorytmu:
 \begin{algorithm}
 \caption{ilorazyRoznicowe}
@@ -104,6 +107,168 @@ Poniżej znajduje się pseudokod algorytmu:
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
+
+\subsection{Zadanie 2.}
+W zadaniu 2. należy zaimplementować funkcję obliczającą wartość wielomianu interpolacyjnego w danym punkcie $x$ korzystając z ilorazów różnicowych i schematu Hornera. Poniżej znajduje się pseudokod algorytmu:
+\begin{algorithm}
+    \caption{warNewton}
+    \begin{algorithmic}[1]
+    \Function{warNewton}{$x, F, x_0$}
+        \State $n \gets \text{length}(F)$
+        \State $p \gets F[n-1]$
+        \For{$i \gets n-2$ downto $0$}
+            \State $p \gets F[i] + (x - x_0) \cdot p$
+        \EndFor
+        \State \Return $p$
+    \EndFunction
+\end{algorithmic}
+\end{algorithm}
+\pagebreak
+\subsection{Zadanie 3.}
+W zadaniu 3. należy zaimplementować funkcję zwracającą współczynniki wielomianu interpolacyjnego w postaci naturalnej. 
+\[
+    p_n(x) = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n.
+\]
+W tym celu należy skorzystać z ilorazów różnicowych i wzoru:
+\[
+    a_k = f[x_0, x_1, \ldots, x_k] + \sum_{j=0}^{k-1} a_j \prod_{i=0}^{j-1} (x_i - x_j).
+\]
+Poniżej znajduje się pseudokod algorytmu:
+\begin{algorithm}
+\caption{naturalna}
+\begin{algorithmic}[1]
+\Function{naturalna}{$x, fx$}
+    \State $n \gets \text{length}(x)$
+    \For {$i \gets 0$ to $n-1$} \Comment{init tablicy}
+        \State $fx[i] \gets f[x_0, x_1, \ldots, x_i]$
+    \EndFor
+    \State $a[n] \gets fx[n]$
+    \For{$i \gets n-1$ downto $1$}
+        \State $a[i] \gets fx[i]$
+        \For{$j \gets i+1$ to $n-1$}
+            \State $a[j] \gets a[j] - a[j+1] \cdot x[i]$
+        \EndFor
+    \EndFor
+    \State \Return $a$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Zadanie 4.}
+W zadaniu 4. należy zaimplementować funkcję wykożystującą wszystkie poprzednie do narysowania wykresu funkcji interpolowanej i oryginalnej. W tym celu należy skorzystać z biblioteki \texttt{Plots.jl} i funkcji \texttt{plot}.\\
+Funkcja ma również mieć możliwość wyboru węzłów interpolacji: równoodległych lub węzłów Czebyszewa:
+\begin{itemize}
+    \item Węzły równoodległe:
+    \[
+        x_i = a + i \cdot \frac{b - a}{n}, \quad i = 0, 1, \ldots, n
+    \]
+    \item Węzły Czebyszewa:
+    \[
+        x_i = \frac{a + b}{2} + \frac{b - a}{2} \cos\left(\frac{2\pi i + \pi}{2n + 2}\right), \quad i = 0, 1, \ldots, n
+    \]
+\end{itemize}
+\subsection{Zadanie 5.}
+W zadaniu 5. należy przetestować działanie zaimplementowanych funkcji na przykładach:
+\begin{itemize}
+    \item $f(x) = e^x$ na przedziale $[0, 1]$ z stopniami $n = 5, 10, 15$.
+    \item $f(x) = x^2 \sin(x)$ na przedziale $[-1, 1]$ z stopniami $n = 5, 10, 15$. 
+\end{itemize}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{exp_n_5.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{exp_n_10.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{exp_n_15.png}
+\end{figure}
+\pagebreak
+Jak widać na powyższych wykresach, wraz ze wzrostem liczby węzłów interpolacji nie zauważalna jest różnica między funkcją oryginalną a interpolowaną. Zatem interpolacja działa poprawnie dla funkcji $f(x) = e^x$.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{x2sinx_n_5.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{x2sinx_n_10.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{x2sinx_n_15.png}
+\end{figure}
+\pagebreak
+Na powyższych wykresach widać, że dla funkcji $f(x) = x^2 \sin(x)$ zachowuje się w identyczny sposób jak dla $f(x) = e^x$. Zatem interpolacja działa poprawnie również dla tej funkcji.
+
+\subsection{Zadanie 6.}
+W zadaniu 6. należy porównać efekty interpolacji dla węzłów równoodległych i węzłów Czebyszewa na przykładzie funkcji:
+\begin{itemize}
+    \item $f(x) = |x|$ na przedziale $[-1, 1]$ z stopniami $n = 5, 10, 15$.
+    \item $f(x) = \frac{1}{1 + x^2}$ na przedziale $[-5, 5]$ z stopniami $n = 5, 10, 15$.
+\end{itemize}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{abs_rowne_5.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{abs_czebyszew_5.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{abs_rowne_10.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{abs_czebyszew_10.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{abs_rowne_15.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{abs_czebyszew_15.png}
+\end{figure}
+\pagebreak
+Zdaje się, że interpolacja funkcji $f(x) = |x|$ prowadzi do znacznie większych błędów niżeli dla poprzednich funkcji. \\
+Na powyższych wykresach widać, że dla interpolacja za pomocą węzłów równoodległych prowadzi do dużych błędów przy krańcu przedziału. Wynika to z faktu, że funckja nie ma ciągłej pochodnej w punkcie $x = 0$ (ma ostry ``czubek''). Natomiast interpolacja za pomocą węzłów Czebyszewa radzi sobie lepiej, zmniejszając błąd przy krańcach przedziału, i generalnie lepiej dopasowując się do funkcji oryginalnej. Widać również, że wraz ze wzrostem liczby węzłów interpolacji błąd maleje, inaczej jak w przypadku węzłów równoodległych, gdzie błąd pozostaje na podobnym rozmiarze przy krańcach przedziału.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wielomian_rowne5.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wielomian_czebyszew_5.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wielomian_rowne10.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wielomian_czebyszew_10.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wielomian_rowne15.png}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wielomian_czebyszew_15.png}
+\end{figure}
+\pagebreak
+%wraz z wzrostem n dla rowno odleglych rosna odchylenia na krańcach, dla czebyszewa, widac zmniejszenie bledow. opisz w kontekcjie efektu Rungego
+Podobnie jak w przypadku funkcji $f(x) = |x|$, interpolacja funkcji $f(x) = \frac{1}{1 + x^2}$ prowadzi do znacznych błędów przy użyciu węzłów równoodległych, szczególnie przy krańcach przedziału. Wraz ze wzrostem liczby węzłów interpolacji, błąd ten się zwiększa, co jest przykładem efektu Rungego. Natomiast użycie węzłów Czebyszewa znacząco redukuje te błędy, prowadząc do lepszego dopasowania do funkcji oryginalnej, zwłaszcza przy większej liczbie węzłów.
+%opisz efekt Rungego
+\section{Wnioski}
+W przeprowadzonych eksperymentach zaobserwowano, że interpolacja wielomianowa jest skuteczną metodą przybliżania funkcji, jednak jej efektywność zależy od wyboru węzłów interpolacji. Węzły równoodległe mogą prowadzić do znacznych błędów, zwłaszcza przy większej liczbie węzłów, co jest ilustrowane przez efekt Rungego. Z kolei węzły Czebyszewa okazały się bardziej stabilne i skuteczne, redukując błędy interpolacji, szczególnie przy funkcjach z ostrymi zmianami.
+
+ 
+
+
 
 
 \end{document}
